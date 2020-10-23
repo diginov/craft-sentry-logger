@@ -1,0 +1,37 @@
+{
+  "name": "diginov/craft-sentry-logger",
+  "description": "Pushes Craft CMS logs to Sentry through a native Yii 2 log target",
+  "version": "1.0.0",
+  "type": "craft-plugin",
+  "keywords": ["sentry", "sentry-logger", "craft", "cms", "craftcms", "craft-plugin", "yii2"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Diginov",
+      "homepage": "https://github.com/diginov"
+    }
+  ],
+  "support": {
+    "email": "support@diginov.com",
+    "issues": "https://github.com/diginov/craft-sentry-logger/issues?state=open",
+    "source": "https://github.com/diginov/craft-sentry-logger",
+    "docs": "https://github.com/diginov/craft-sentry-logger/blob/master/README.md",
+    "rss": "https://github.com/diginov/craft-sentry-logger/releases.atom"
+  },
+  "require": {
+    "php": "^7.2",
+    "craftcms/cms": "^3.4.0",
+    "sentry/sdk": "^3.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "diginov\\sentry\\": "src/"
+    }
+  },
+  "extra": {
+    "name": "Sentry Logger",
+    "handle": "sentry-logger",
+    "developer": "Diginov",
+    "changelogUrl": "https://raw.githubusercontent.com/diginov/craft-sentry-logger/master/CHANGELOG.md"
+  }
+}

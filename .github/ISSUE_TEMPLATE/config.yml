@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/diginov/craft-sentry-logger/blob/master/README.md
+    about: Read the official documentation.
+  - name: Craft Discord
+    url: https://craftcms.com/discord
+    about: Meet the community.
+  - name: Stack Exchange
+    url: https://craftcms.stackexchange.com/
+    about: Get help and help others.

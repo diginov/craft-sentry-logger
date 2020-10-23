@@ -1,0 +1,81 @@
+{% import "_includes/forms" as forms %}
+
+{% macro configWarning(plugin, setting) -%}
+    {{ "This is being overridden by the **`{setting}`** parameter in your **`{file}`** config file." |t(plugin.handle, {
+        setting: setting,
+        file: plugin.handle ~ '.php',
+    }) }}
+{%- endmacro %}
+
+{% from _self import configWarning %}
+
+{% if isAdvancedConfig %}
+    <div class="readable">
+        <blockquote class="note warning">
+            {{ "You are using the **advanced configuration** method in your **app.php** config file." |t(plugin.handle) |md }}
+        </blockquote>
+    </div>
+{% endif %}
+
+{{ forms.lightswitchField({
+    first: not isAdvancedConfig,
+    label: "Enabled" |t(plugin.handle),
+    instructions: "When disabled, the plugin will not send your logs to Sentry." |t(plugin.handle),
+    id: 'enabled',
+    name: 'enabled',
+    on: settings.enabled,
+    errors: settings.getErrors('enabled'),
+    warning: 'enabled' in overrides |keys ? configWarning(plugin, 'enabled')
+}) }}
+
+{{ forms.lightswitchField({
+    label: "Anonymous" |t(plugin.handle),
+    instructions: "When enabled, the plugin will not send sensitive visitor and user data to Sentry." |t(plugin.handle),
+    id: 'anonymous',
+    name: 'anonymous',
+    on: settings.anonymous,
+    errors: settings.getErrors('anonymous'),
+    warning: 'anonymous' in overrides |keys ? configWarning(plugin, 'anonymous')
+}) }}
+
+{{ forms.autosuggestField({
+    label: "Client Key (DSN)" |t(plugin.handle),
+    instructions: "To send logs to Sentry you need to add your Client Key (DSN) which can be found in your [project settings](https://sentry.io/settings/)." |t(plugin.handle),
+    id: 'dsn',
+    name: 'dsn',
+    value: settings.dsn,
+    suggestEnvVars: true,
+    required: true,
+    errors: settings.getErrors('dsn'),
+    warning: 'dsn' in overrides |keys ? configWarning(plugin, 'dsn'),
+}) }}
+
+{{ forms.hidden({
+    id: 'levels',
+    name: 'levels',
+}) }}
+
+{{ forms.checkboxSelectField({
+    label: "Included log levels" |t(plugin.handle),
+    instructions: "Which log levels do you want to be sent to Sentry?" |t(plugin.handle),
+    id: 'levels',
+    name: 'levels',
+    options: [
+        { label: "Error" |t(plugin.handle), value: 'error' },
+        { label: "Warning" |t(plugin.handle), value: 'warning' },
+    ],
+    values: settings.levels,
+    errors: settings.getErrors('levels'),
+    warning: 'levels' in overrides |keys ? configWarning(plugin, 'levels'),
+}) }}
+
+{{ forms.textField({
+    label: "Excluded HTTP status codes" |t(plugin.handle),
+    instructions: "Comma separated list of HTTP status codes that should not be sent to Sentry." |t(plugin.handle),
+    id: 'exceptCodes',
+    name: 'exceptCodes',
+    placeholder: '403, 404',
+    value: settings.exceptCodes |join(', '),
+    errors: settings.getErrors('exceptCodes'),
+    warning: 'exceptCodes' in overrides |keys ? configWarning(plugin, 'exceptCodes')
+}) }}
