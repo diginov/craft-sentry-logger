@@ -23,7 +23,7 @@ Additional data pushed to Sentry:
 - Craft edition, licence, schema and version
 - Craft `devMode` status taken from general config
 - Craft environment taken from `CRAFT_ENVIRONMENT`
-- Twig template path including source template when compiled
+- Twig template path and line number for compiled templates
 - Complete stack trace for exception
 
 ## Requirements

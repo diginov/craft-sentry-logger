@@ -72,6 +72,7 @@ class SentryTarget extends \yii\log\Target
             'default_integrations' => false,
 
             'integrations' => [
+                new CraftIntegration(),
                 new RequestIntegration(),
                 new TransactionIntegration(),
                 new FrameContextifierIntegration(),
@@ -146,10 +147,6 @@ class SentryTarget extends \yii\log\Target
                     $scope->setExtra('Request Route', $request->getAbsoluteUrl());
                 }
 
-                if ($twigTemplate = $this->getTwigTemplate($message)) {
-                    $scope->setExtra('Twig Template', $twigTemplate);
-                }
-
                 if ($message instanceof \Throwable) {
                     Sentry\captureException($message);
                 } else {
@@ -209,48 +206,5 @@ class SentryTarget extends \yii\log\Target
             default:
                 throw new \UnexpectedValueException("An unsupported log level \"{$level}\" given.");
         }
-    }
-
-    /**
-     * Returns Twig template file path.
-     *
-     * @param $message
-     * @return string|null
-     */
-    protected function getTwigTemplate($message)
-    {
-        if ($message instanceof \Throwable) {
-            $compiledFile = $message->getFile();
-            $compiledPath = Craft::$app->getPath()->getCompiledTemplatesPath(false);
-
-            if ($compiledPath && StringHelper::startsWith($compiledFile, $compiledPath) && file_exists($compiledFile)) {
-                $content = file_get_contents($compiledFile);
-
-                if (preg_match('/return new Source\(".*", ".*", "(.*)"\);/', $content, $matches)) {
-                    $sourceFile = $matches[1] ?? null;
-
-                    if ($sourceFile && file_exists($sourceFile)) {
-                        try {
-                            $file = new \SplFileObject($compiledFile);
-                            $file->seek($message->getLine() - 2);
-                            $lineContent = $file->current();
-                        } catch (\Throwable $e) {
-                            $lineContent = '';
-                        }
-
-                        $lineNumber = null;
-                        if (preg_match('/line (\d+)$/', $lineContent, $matches)) {
-                            $lineNumber = $matches[1] ?? null;
-                        }
-
-                        return $sourceFile . ($lineNumber ? " (line {$lineNumber})" : '');
-                    }
-                }
-            } else if ($message instanceof \Twig\Error\Error) {
-                return $message->getFile() . " (line {$message->getLine()})";
-            }
-        }
-
-        return null;
     }
 }
