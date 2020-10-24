@@ -126,7 +126,7 @@ class SentryTarget extends \yii\log\Target
                 $scope->setExtras([
                     'App Name'      => Craft::$app->getSystemName(),
                     'Craft Edition' => Craft::$app->getEditionName() ?? 'Solo',
-                    'Craft Licence' => Craft::$app->getLicensedEditionName() ?? 'Solo',
+                    'Craft Licence' => Craft::$app->getLicensedEditionName(),
                     'Craft Schema'  => Craft::$app->getInstalledSchemaVersion(),
                     'Craft Version' => Craft::$app->getVersion(),
                     'Dev Mode'      => Craft::$app->getConfig()->getGeneral()->devMode ? 'Yes' : 'No',
