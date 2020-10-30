@@ -3,7 +3,6 @@
 namespace diginov\sentry\log;
 
 use Craft;
-use craft\helpers\StringHelper;
 
 use Sentry;
 use Sentry\Integration\RequestIntegration;
