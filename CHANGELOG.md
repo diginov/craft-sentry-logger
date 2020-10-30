@@ -1,5 +1,10 @@
 # Release Notes for Sentry Logger
 
+## 1.0.4 - 2020-10-30
+
+### Changed
+- Changed documentation about except and exceptCodes parameters.
+
 ## 1.0.3 - 2020-10-30
 
 ### Changed
