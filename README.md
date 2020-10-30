@@ -1,14 +1,18 @@
-<img src="src/icon.svg" width="100" height="100" alt="Sentry Logger">
+<img src="src/icon.svg" width="100" alt="Sentry Logger Icon">
 
 # Sentry Logger for Craft CMS
 
 Pushes Craft CMS logs to [Sentry](https://sentry.io/) through a native Yii 2 log target.
 
+<img src="screenshot.png" width="500" alt="Sentry Logger Screenshot">
+
 ## Features
 
 - Updated to the latest Sentry SDK version 3
-- Calls for `Craft::error()`, `Craft::warning()` are picked up
-- Plugin settings can be set in the CP settings or via a plugin config file
+- Native Yii 2 log target that is fully customisable
+- All errors and warnings for every request are sent 
+- Plugin settings can be defined in the CP or with a config file
+- Calls for `Craft::error()`, `Craft::warning()` are picked up and categorized
 - Anonymous option to prevent sensitive visitor and user data from being sent to Sentry
 
 Additional data pushed to Sentry:
@@ -23,8 +27,7 @@ Additional data pushed to Sentry:
 - Craft edition, licence, schema and version
 - Craft `devMode` status taken from general config
 - Craft environment taken from `CRAFT_ENVIRONMENT`
-- Twig template path and line number for compiled templates
-- Complete stack trace for exception
+- Twig template path and line number for exception in compiled templates
 
 ## Requirements
 
@@ -42,8 +45,8 @@ php craft plugin/install sentry-logger
 
 ## Basic configuration
 
-You can configure plugin settings directly in the CP or you can create a `config/sentry-logger.php` config file with 
-the following contents:
+You can configure the plugin settings directly in the CP or you can create a `config/sentry-logger.php` config file 
+with the following contents:
 
 ```php
 <?php
@@ -72,11 +75,10 @@ return [
 
 ## Advanced configuration
 
-This method is suggested because it adds this Sentry log target to the existing log component before loading any 
-Craft plugins and modules. This way you are assured that all logs are picked up by Sentry.
+This is a better method because it adds this Sentry log target to the existing log component before loading any Craft 
+plugins and modules. This way you are assured that all logs are sent to Sentry.
 
-Please note that with this method, the basic configuration method and the `config/sentry-logger.php` config file are 
-useless.
+Please note that this method bypass the basic configuration method and the `config/sentry-logger.php` config file.
 
 To activate the advanced configuration, add the following `log` component to your existing `config/app.php` config file:
 
@@ -110,7 +112,7 @@ return [
 
 ## Configuration options
 
-This plugin add a native Yii 2 log target that is an instance of the [yii\log\Target](https://www.yiiframework.com/doc/api/2.0/yii-log-target) 
+This plugin adds a native Yii 2 log target that is an instance of the [yii\log\Target](https://www.yiiframework.com/doc/api/2.0/yii-log-target) 
 class. See the [Yii 2 API Documentation](https://www.yiiframework.com/doc/api/2.0/yii-log-target) for all available 
 properties.
 
@@ -120,7 +122,8 @@ This parameter is a boolean that indicates whether this log target is enabled.
 
 ### `anonymous`
 
-This parameter is a boolean that indicates whether this log target will hide sensitive visitor and user data.
+This parameter is a boolean that indicates whether this log target will NOT send sensitive visitor and user data to 
+Sentry.
 
 ### `dsn`
 
@@ -128,19 +131,35 @@ This parameter is a string that contain the Client Key (DSN) that Sentry gave yo
 
 ### `release`
 
-This optional parameter is a string that contain the version of your code that is deployed to an environment. See more 
+This parameter is a string that contain the version of your code that is deployed to an environment. See more 
 information about [releases](https://docs.sentry.io/platforms/php/configuration/releases/) in Sentry documentation.
 
 ### `levels`
 
-This parameter is an array of log level names that this log target is interested in. Valid level names include `error` 
-and `warning`. We have intentionally disabled reporting `info` log level to Sentry because Craft generates too many 
-messages with this level.
+This parameter is an array of log level names that this log target is interested in. Defaults to `error` and `warning`. 
+We have intentionally disabled reporting `info` log level to Sentry because Craft generates a lot of messages for this 
+log level.
+
+### `categories`
+
+This parameter is an array of message categories that this log target is interested in. Defaults to empty, meaning all 
+categories. You can use an asterisk at the end of a category so that the category may be used to match those categories 
+sharing the same common prefix. For example, `yii\db*` will match categories starting with `yii\db\`, such as 
+`yii\db\Connection`.
+
+### `except`
+
+This parameter is an array of message categories that this log target is NOT interested in. Defaults to empty, meaning 
+no uninteresting messages. If this property is not empty, then any category listed here will be excluded from 
+`categories` parameter. You can use an asterisk at the end of a category so that the category can be used to match 
+those categories sharing the same common prefix. For example, `yii\db*` will match categories starting with `yii\db\`, 
+such as `yii\db\Connection`.
 
 ### `exceptCodes`
 
-This parameter is an array of HTTP status codes that this log target is not interested in. For example `403` for the
-forbidden or `404` for the not found status codes.
+This parameter is an array of HTTP status codes that this log target is NOT interested in. Defaults to empty, meaning no 
+uninteresting HTTP status codes. This is a shortcut for the `except` parameter to make it easier. For example `403` for 
+the forbidden or `404` for the not found HTTP status.
 
 ## Credits
 

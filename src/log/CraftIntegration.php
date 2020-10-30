@@ -47,6 +47,8 @@ final class CraftIntegration implements \Sentry\Integration\IntegrationInterface
     }
 
     /**
+     * Add source Twig template to stack trace frames vars when Twig template is compiled
+     *
      * @param Stacktrace $stacktrace
      */
     private function addTwigTemplateToStacktraceFrames(Stacktrace $stacktrace)
