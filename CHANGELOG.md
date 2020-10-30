@@ -1,5 +1,10 @@
 # Release Notes for Sentry Logger
 
+## 1.0.3 - 2020-10-30
+
+### Changed
+- Changed documentation, code comments and screenshot.
+
 ## 1.0.2 - 2020-10-24
 
 ### Added
