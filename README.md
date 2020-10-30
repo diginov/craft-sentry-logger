@@ -26,7 +26,7 @@ Additional data pushed to Sentry:
 - Visitor IP address (sensitive data)
 - Craft edition, licence, schema and version
 - Craft `devMode` status taken from general config
-- Craft environment taken from `CRAFT_ENVIRONMENT`
+- Craft current environment taken from `CRAFT_ENVIRONMENT`
 - Twig template path and line number for exception in compiled templates
 
 ## Requirements
@@ -150,16 +150,16 @@ sharing the same common prefix. For example, `yii\db*` will match categories sta
 ### `except`
 
 This parameter is an array of message categories that this log target is NOT interested in. Defaults to empty, meaning 
-no uninteresting messages. If this property is not empty, then any category listed here will be excluded from 
+no uninteresting messages. If this property is not empty, then any category listed here will be excluded from the 
 `categories` parameter. You can use an asterisk at the end of a category so that the category can be used to match 
 those categories sharing the same common prefix. For example, `yii\db*` will match categories starting with `yii\db\`, 
 such as `yii\db\Connection`.
 
 ### `exceptCodes`
 
-This parameter is an array of HTTP status codes that this log target is NOT interested in. Defaults to empty, meaning no 
-uninteresting HTTP status codes. This is a shortcut for the `except` parameter to make it easier. For example `403` for 
-the forbidden or `404` for the not found HTTP status.
+This parameter is an array of HTTP status codes that this log target is NOT interested in. This is a shortcut of the 
+`except` parameter to make it easier. Defaults to `404` and `403`, meaning that the **Not found** and **Forbidden** 
+HTTP status codes will be excluded from the `categories` parameter.
 
 ## Credits
 
