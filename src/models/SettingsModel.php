@@ -74,7 +74,7 @@ class SettingsModel extends \craft\base\Model
                 'dsn',
                 'required',
                 'message' => Craft::t('yii', '{attribute} cannot be blank.', [
-                    'attribute' => 'Client Key (DSN)'
+                    'attribute' => 'Client Key (DSN)',
                 ]),
             ],[
                 'dsn',
@@ -83,7 +83,7 @@ class SettingsModel extends \craft\base\Model
                         Dsn::createFromString(Craft::parseEnv($this->$attribute));
                     } catch (\Throwable $e) {
                         $this->addError($attribute, Craft::t('yii', '{attribute} is invalid.', [
-                            'attribute' => Craft::t('sentry-logger', 'Client Key (DSN)')
+                            'attribute' => Craft::t('sentry-logger', 'Client Key (DSN)'),
                         ]));
                     }
                 }
@@ -91,9 +91,9 @@ class SettingsModel extends \craft\base\Model
                 'exceptCodes',
                 function($attribute, $params, $validator) {
                     foreach($this->$attribute as $value) {
-                        if (!empty($value) && (!is_numeric($value) || strlen($value) != 3)) {
+                        if (!empty($value) && (!is_numeric($value) || strlen((int) $value) != 3)) {
                             $this->addError($attribute, Craft::t('yii', '{attribute} is invalid.', [
-                                'attribute' => Craft::t('sentry-logger', 'Excluded HTTP status codes')
+                                'attribute' => Craft::t('sentry-logger', 'Excluded HTTP status codes'),
                             ]));
                             break;
                         }

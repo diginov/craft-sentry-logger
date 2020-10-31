@@ -54,11 +54,13 @@ class SentryTarget extends \yii\log\Target
             return;
         }
 
-        $this->except[] = 'yii\i18n\PhpMessageSource:*';
+        if (is_array($this->except)) {
+            $this->except[] = 'yii\i18n\PhpMessageSource:*';
 
-        if (is_array($this->exceptCodes)) {
-            foreach($this->exceptCodes as $exceptCode) {
-                $this->except[] = 'yii\web\HttpException:'.$exceptCode;
+            if (is_array($this->exceptCodes)) {
+                foreach($this->exceptCodes as $exceptCode) {
+                    $this->except[] = 'yii\web\HttpException:'.$exceptCode;
+                }
             }
         }
 
