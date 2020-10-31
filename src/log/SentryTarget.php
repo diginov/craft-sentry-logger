@@ -127,12 +127,12 @@ class SentryTarget extends \yii\log\Target
                 $scope->setExtras([
                     'App Name'      => Craft::$app->getSystemName(),
                     'Craft Edition' => Craft::$app->getEditionName() ?? 'Solo',
-                    'Craft Licence' => Craft::$app->getLicensedEditionName(),
+                    'Craft Licence' => Craft::$app->getLicensedEditionName() ?? 'Solo',
                     'Craft Schema'  => Craft::$app->getInstalledSchemaVersion(),
                     'Craft Version' => Craft::$app->getVersion(),
                     'Dev Mode'      => Craft::$app->getConfig()->getGeneral()->devMode ? 'Yes' : 'No',
                     'PHP Version'   => phpversion(),
-                    'Request Type'  => $request->getIsConsoleRequest() ? 'Console' : 'Web',
+                    'Request Type'  => ($request->getIsConsoleRequest() ? 'Console' : $request->getIsAjax()) ? 'Ajax' : 'Web',
                     'Yii Version'   => Craft::$app->getYiiVersion(),
                 ]);
 
@@ -145,6 +145,8 @@ class SentryTarget extends \yii\log\Target
 
                     $scope->setExtra('Request Route', $scriptFile . implode(' ', $request->getParams()));
                 } else {
+                    $scope->setExtra('Request Mime Type', $request->getMimeType());
+                    $scope->setExtra('Request Method', $request->getMethod());
                     $scope->setExtra('Request Route', $request->getAbsoluteUrl());
                 }
 
