@@ -10,14 +10,14 @@ Pushes Craft CMS logs to [Sentry](https://sentry.io/) through a native Yii 2 log
 
 - Updated to the latest Sentry SDK version 3
 - Native Yii 2 log target that is fully customisable
-- All errors and warnings for every request are sent 
+- All errors and warnings for each request are sent 
 - Plugin settings can be defined in the CP or with a config file
-- Calls for `Craft::error()`, `Craft::warning()` are picked up and categorized
+- Calls for `Craft::error()` and `Craft::warning()` are sent and categorized
 - Anonymous option to prevent sensitive visitor and user data from being sent to Sentry
 
 Additional data pushed to Sentry:
 
-- Request type (web or console)
+- Request type (web, ajax or console)
 - Request method, headers and body
 - Request route including query string
 - Script executed including parameters (console request)
@@ -27,11 +27,11 @@ Additional data pushed to Sentry:
 - Craft edition, licence, schema and version
 - Craft `devMode` status taken from general config
 - Craft current environment taken from `CRAFT_ENVIRONMENT`
-- Twig template path and line number for exception in compiled templates
+- Twig template path and line number for exceptions in compiled templates
 
 ## Requirements
 
-This plugin requires PHP 7.2 or later and Craft CMS 3.4.0 or later.
+This plugin requires PHP 7.2 or later and Craft CMS 3.5 or later.
 
 ## Installation
 
@@ -110,7 +110,7 @@ return [
 ];
 ```
 
-## Configuration options
+## Configuration parameters
 
 This plugin adds a native Yii 2 log target that is an instance of the [yii\log\Target](https://www.yiiframework.com/doc/api/2.0/yii-log-target) 
 class. See the [Yii 2 API Documentation](https://www.yiiframework.com/doc/api/2.0/yii-log-target) for all available 

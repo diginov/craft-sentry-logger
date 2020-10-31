@@ -1,5 +1,16 @@
 # Release Notes for Sentry Logger
 
+## 1.0.5 - 2020-10-31
+
+### Added
+- Added request method, ajax and mimetype to Sentry additional data. 
+
+### Changed
+- Changed required Craft CMS version.
+
+### Fixed
+- Fixed excluded HTTP status codes validation.
+
 ## 1.0.4 - 2020-10-30
 
 ### Changed
