@@ -1,5 +1,13 @@
 # Release Notes for Sentry Logger
 
+## 1.0.6 - 2020-11-01
+
+### Added
+- Added missing translation in the settings model.
+
+### Fixed
+- Fixed Twig template path and line number added to stack frames when the exception occurs in a compiled template. 
+
 ## 1.0.5 - 2020-10-31
 
 ### Added
