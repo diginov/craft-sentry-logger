@@ -67,7 +67,7 @@ final class CraftIntegration implements \Sentry\Integration\IntegrationInterface
             if (StringHelper::startsWith($frame->getAbsoluteFilePath(), $compiledTemplatesPath)) {
                 $content = file_get_contents($frame->getAbsoluteFilePath());
 
-                if (preg_match('/return new Source\(".*", ".*", "(.*)"\);/', $content, $matches)) {
+                if (preg_match('/", "(\/.+\.(twig|html?))"\);/', $content, $matches)) {
                     $sourceFile = $matches[1] ?? null;
 
                     if ($sourceFile && file_exists($sourceFile)) {
