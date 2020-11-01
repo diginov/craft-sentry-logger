@@ -74,7 +74,7 @@ class SettingsModel extends \craft\base\Model
                 'dsn',
                 'required',
                 'message' => Craft::t('yii', '{attribute} cannot be blank.', [
-                    'attribute' => 'Client Key (DSN)',
+                    'attribute' => Craft::t('sentry-logger', 'Client Key (DSN)'),
                 ]),
             ],[
                 'dsn',
