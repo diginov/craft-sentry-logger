@@ -1,5 +1,23 @@
 # Release Notes for Sentry Logger
 
+## 1.0.7 - 2020-11-05
+
+### Added
+- Added a new `app.name` to Sentry tags.
+- Added Twig version to Sentry additional data.
+- Added database driver and version to Sentry additional data.
+
+### Changed
+- Cleaned additional data sent to Sentry.
+- Updated documentation about the `exceptCodes` parameter.
+- Updated documentation about basic and advanced configuration files.
+
+### Fixed
+- Fixed request type detection for console commands. 
+
+### Removed
+- Removed request method and mimetype from Sentry additional data.
+
 ## 1.0.6 - 2020-11-01
 
 ### Added
