@@ -51,13 +51,15 @@ with the following contents:
 ```php
 <?php
 
+use craft\helpers\App;
+
 return [
 
     '*' => [
         'enabled' => false,
         'anonymous' => false,
-        'dsn' => getenv('SENTRY_DSN'),
-        'release' => getenv('SENTRY_RELEASE'),
+        'dsn' => App::env('SENTRY_DSN'),
+        'release' => App::env('SENTRY_RELEASE'),
         'levels' => ['error', 'warning'],
         'exceptCodes' => [403, 404],
     ],
@@ -85,19 +87,21 @@ To activate the advanced configuration, add the following `log` component to you
 ```php
 <?php
 
+use craft\helpers\App;
+
 return [
     
     'components' => [
         'log' => function() {
-            $config = craft\helpers\App::logConfig();
+            $config = App::logConfig();
 
             if ($config && class_exists('\diginov\sentry\log\SentryTarget')) {
                 $config['targets'][] = [
                     'class' => 'diginov\sentry\log\SentryTarget',
                     'enabled' => CRAFT_ENVIRONMENT != 'dev',
                     'anonymous' => false,
-                    'dsn' => getenv('SENTRY_DSN'),
-                    'release' => getenv('SENTRY_RELEASE'),
+                    'dsn' => App::env('SENTRY_DSN'),
+                    'release' => App::env('SENTRY_RELEASE'),
                     'levels' => ['error', 'warning'],
                     'exceptCodes' => [403, 404],
                 ];
@@ -157,9 +161,9 @@ such as `yii\db\Connection`.
 
 ### `exceptCodes`
 
-This parameter is an array of HTTP status codes that this log target is NOT interested in. This is a shortcut of the 
-`except` parameter to make it easier. Defaults to `404` and `403`, meaning that the **Not found** and **Forbidden** 
-HTTP status codes will be excluded from the `categories` parameter.
+This parameter is an array of HTTP status codes that this log target is NOT interested in. This is a shortcut for the 
+`except` parameter to make it easier. Defaults to `403` and `404`, meaning that `yii\web\HttpException:403` and 
+`yii\web\HttpException:404` messages will be excluded from the `categories` parameter.
 
 ## Credits
 
