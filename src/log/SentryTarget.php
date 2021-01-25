@@ -63,7 +63,9 @@ class SentryTarget extends \yii\log\Target
 
             if (is_array($this->exceptCodes)) {
                 foreach($this->exceptCodes as $exceptCode) {
-                    $this->except[] = 'yii\web\HttpException:'.$exceptCode;
+                    if (is_numeric($exceptCode) && strlen($exceptCode) == 3) {
+                        $this->except[] = 'yii\web\HttpException:'.$exceptCode;
+                    }
                 }
             }
         }
