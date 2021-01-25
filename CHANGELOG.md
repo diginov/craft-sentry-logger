@@ -1,5 +1,10 @@
 # Release Notes for Sentry Logger
 
+## 1.0.8 - 2021-01-25
+
+### Changed
+- Updated `exceptCodes` validation before adding to `except` categories.
+
 ## 1.0.7 - 2020-11-05
 
 ### Added
