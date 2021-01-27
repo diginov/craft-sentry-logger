@@ -15,7 +15,7 @@ Pushes Craft CMS logs to [Sentry](https://sentry.io/) through a native Yii 2 log
 - Calls for `Craft::error()` and `Craft::warning()` are sent and categorized
 - Anonymous option to prevent sensitive visitor and user data from being sent to Sentry
 
-Additional data pushed to Sentry:
+**Additional data pushed to Sentry**
 
 - Request type (web, ajax or console)
 - Request method, headers and body
@@ -78,11 +78,13 @@ return [
 ## Advanced configuration
 
 This is a better method because it adds this Sentry log target to the existing log component before loading any Craft 
-plugins and modules. This way you are assured that all logs are sent to Sentry.
+plugins or modules. This way you are assured that all logs are sent to Sentry.
 
-Please note that this method bypass the basic configuration method and the `config/sentry-logger.php` config file.
+Please note that this method override the basic configuration method. 
 
-To activate the advanced configuration, add the following `log` component to your existing `config/app.php` config file:
+To activate the advanced configuration, extend the `log` component in your existing `config/app.php` config file:
+
+### Craft 3.6 or later
 
 ```php
 <?php
@@ -90,14 +92,48 @@ To activate the advanced configuration, add the following `log` component to you
 use craft\helpers\App;
 
 return [
-    
+
+    'components' => [
+        'log' => [
+            'targets' => [
+                '__craftSentryTarget' => function() {
+                    if (!class_exists('diginov\\sentry\\log\\SentryTarget')) {
+                        return null;
+                    }
+
+                    return Craft::createObject([
+                        'class' => 'diginov\\sentry\\log\\SentryTarget',
+                        'enabled' => CRAFT_ENVIRONMENT != 'dev',
+                        'anonymous' => false,
+                        'dsn' => App::env('SENTRY_DSN'),
+                        'release' => App::env('SENTRY_RELEASE'),
+                        'levels' => ['error', 'warning'],
+                        'exceptCodes' => [403, 404],
+                    ]);
+                },
+            ],
+        ],
+    ],
+
+];
+```
+
+### Craft 3.5 only
+
+```php
+<?php
+
+use craft\helpers\App;
+
+return [
+
     'components' => [
         'log' => function() {
             $config = App::logConfig();
 
-            if ($config && class_exists('\diginov\sentry\log\SentryTarget')) {
+            if (class_exists('diginov\\sentry\\log\\SentryTarget')) {
                 $config['targets'][] = [
-                    'class' => 'diginov\sentry\log\SentryTarget',
+                    'class' => 'diginov\\sentry\\log\\SentryTarget',
                     'enabled' => CRAFT_ENVIRONMENT != 'dev',
                     'anonymous' => false,
                     'dsn' => App::env('SENTRY_DSN'),
@@ -107,7 +143,7 @@ return [
                 ];
             }
 
-            return $config ? Craft::createObject($config) : null;
+            return Craft::createObject($config);
         },
     ],
 

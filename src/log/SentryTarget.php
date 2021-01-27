@@ -129,10 +129,10 @@ class SentryTarget extends \yii\log\Target
 
                 if ($user && !$this->anonymous) {
                     $scope->setUser([
+                        'email'      => $user->email,
                         'id'         => $user->id,
                         'ip_address' => $request->getRemoteIP(),
                         'username'   => $user->username,
-                        'email'      => $user->email,
                         'Admin'      => $user->admin ? 'Yes' : 'No',
                         'Groups'     => $groups ? implode(', ', $groups) : null,
                     ]);
