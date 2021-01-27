@@ -47,25 +47,23 @@ class Plugin extends \craft\base\Plugin
      */
     public function init()
     {
-        $dispatcher = Craft::getLogger()->dispatcher;
+        $dispatcher = Craft::$app->getLog();
 
-        if ($dispatcher instanceof \yii\log\Dispatcher) {
-            foreach($dispatcher->targets as $target) {
-                if ($target instanceof SentryTarget) {
-                    $this->isAdvancedConfig = true;
-                    break;
-                }
+        foreach($dispatcher->targets as $target) {
+            if ($target instanceof SentryTarget) {
+                $this->isAdvancedConfig = true;
+                break;
             }
+        }
 
-            if (!$this->isAdvancedConfig) {
-                $settings = $this->getSettings();
+        if (!$this->isAdvancedConfig) {
+            $settings = $this->getSettings();
 
-                if ($settings->validate()) {
-                    $target = ArrayHelper::merge($settings->toArray(), ['class' => SentryTarget::class]);
-                    $target['dsn'] = Craft::parseEnv($target['dsn']);
-                    $target['release'] = Craft::parseEnv($target['release']);
-                    $dispatcher->targets[] = Craft::createObject($target);
-                }
+            if ($settings->validate()) {
+                $target = ArrayHelper::merge($settings->toArray(), ['class' => SentryTarget::class]);
+                $target['dsn'] = Craft::parseEnv($target['dsn']);
+                $target['release'] = Craft::parseEnv($target['release']);
+                $dispatcher->targets['__craftSentryTarget'] = Craft::createObject($target);
             }
         }
     }
