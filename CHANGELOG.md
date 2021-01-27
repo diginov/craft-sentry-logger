@@ -2,8 +2,11 @@
 
 ## 1.0.9 - 2021-01-27
 
+### Added
+- Added PHP 8 support. ([#1](https://github.com/diginov/craft-sentry-logger/pull/1))
+
 ### Changed
-- Added PHP8 support
+- Updated MIT licence without a year in copyright.
 
 ## 1.0.8 - 2021-01-25
 
