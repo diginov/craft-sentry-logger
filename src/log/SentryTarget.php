@@ -17,7 +17,9 @@ use Twig\Environment as TwigEnvironment;
 
 use Yii;
 use yii\helpers\VarDumper;
+use yii\i18n\PhpMessageSource;
 use yii\log\Logger;
+use yii\web\HttpException;
 
 class SentryTarget extends \yii\log\Target
 {
@@ -59,15 +61,19 @@ class SentryTarget extends \yii\log\Target
         }
 
         if (is_array($this->except)) {
-            $this->except[] = 'yii\i18n\PhpMessageSource:*';
+            $except = [
+                PhpMessageSource::class . ':*',
+            ];
 
             if (is_array($this->exceptCodes)) {
                 foreach($this->exceptCodes as $exceptCode) {
                     if (is_numeric($exceptCode) && strlen($exceptCode) == 3) {
-                        $this->except[] = 'yii\web\HttpException:'.$exceptCode;
+                        $except[] = HttpException::class . ':' . $exceptCode;
                     }
                 }
             }
+
+            $this->except = array_unique(array_merge($this->except, $except));
         }
 
         $options = [
