@@ -1,5 +1,17 @@
 # Release Notes for Sentry Logger
 
+## 1.1.0 - 2021-01-27
+
+> {warning} Read through the [documentation](https://github.com/diginov/craft-sentry-logger/blob/master/README.md) if you are using the advanced configuration method before updating.
+
+### Changed
+- Updated the way the log target is added to the log dispatcher in Craft 3.6.
+- Updated the advanced configuration to not use the deprecated `App::logConfig()` in Craft 3.6.
+- Code cleanup and typo correction.
+
+### Fixed
+- Fixed possible duplicate in `except` message categories.
+
 ## 1.0.9 - 2021-01-27
 
 ### Added
