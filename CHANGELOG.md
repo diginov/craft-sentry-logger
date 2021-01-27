@@ -1,5 +1,10 @@
 # Release Notes for Sentry Logger
 
+## 1.0.9 - 2021-01-27
+
+### Changed
+- Added PHP8 support
+
 ## 1.0.8 - 2021-01-25
 
 ### Changed
