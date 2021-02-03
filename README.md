@@ -13,7 +13,7 @@ Pushes Craft CMS logs to [Sentry](https://sentry.io/) through a native Yii 2 log
 - All errors and warnings for each request are sent 
 - Plugin settings can be defined in the CP or with a config file
 - Calls for `Craft::error()` and `Craft::warning()` are sent and categorized
-- Anonymous option to prevent sensitive visitor and user data from being sent to Sentry
+- Anonymous option to prevent sensitive visitors and users data from being sent to Sentry
 
 **Additional data pushed to Sentry**
 
@@ -158,47 +158,47 @@ properties.
 
 ### `enabled`
 
-This parameter is a boolean that indicates whether this log target is enabled.
+This required parameter is a boolean that indicates whether this log target is enabled.
 
 ### `anonymous`
 
-This parameter is a boolean that indicates whether this log target will NOT send sensitive visitor and user data to 
-Sentry.
+This optional parameter is a boolean that indicates, when enabled, that this log target will NOT send sensitive visitors 
+and users data to Sentry.
 
 ### `dsn`
 
-This parameter is a string that contain the Client Key (DSN) that Sentry gave you in your [project settings](https://sentry.io/settings/).
+This required parameter is a string that contain the Client Key (DSN) that Sentry gave you in your [project settings](https://sentry.io/settings/).
 
 ### `release`
 
-This parameter is a string that contain the version of your code that is deployed to an environment. See more 
+This optional parameter is a string that contain the version of your code that is deployed to an environment. See more 
 information about [releases](https://docs.sentry.io/platforms/php/configuration/releases/) in Sentry documentation.
 
 ### `levels`
 
-This parameter is an array of log level names that this log target is interested in. Defaults to `error` and `warning`. 
-We have intentionally disabled reporting `info` log level to Sentry because Craft generates a lot of messages for this 
-log level.
+This required parameter is an array of log level names that this log target is interested in. Defaults to `error` and 
+`warning`. We have intentionally disabled reporting `info`, `profile` and `debug` log levels to Sentry because Craft 
+generates a lot of messages for these log levels.
 
 ### `categories`
 
-This parameter is an array of message categories that this log target is interested in. Defaults to empty, meaning all 
-categories. You can use an asterisk at the end of a category so that the category may be used to match those categories 
-sharing the same common prefix. For example, `yii\db*` will match categories starting with `yii\db\`, such as 
-`yii\db\Connection`.
+This optional parameter is an array of message categories that this log target is interested in. Defaults to empty, 
+meaning all categories. You can use an asterisk at the end of a category so that the category may be used to match 
+those categories sharing the same common prefix. For example, `yii\db*` will match categories starting with `yii\db\`, 
+such as `yii\db\Connection`.
 
 ### `except`
 
-This parameter is an array of message categories that this log target is NOT interested in. Defaults to empty, meaning 
-no uninteresting messages. If this property is not empty, then any category listed here will be excluded from the 
-`categories` parameter. You can use an asterisk at the end of a category so that the category can be used to match 
+This optional parameter is an array of message categories that this log target is NOT interested in. Defaults to empty, 
+meaning no uninteresting messages. If this property is not empty, then any category listed here will be excluded from 
+the `categories` parameter. You can use an asterisk at the end of a category so that the category can be used to match 
 those categories sharing the same common prefix. For example, `yii\db*` will match categories starting with `yii\db\`, 
 such as `yii\db\Connection`.
 
 ### `exceptCodes`
 
-This parameter is an array of HTTP status codes that this log target is NOT interested in. This is a shortcut for the 
-`except` parameter to make it easier. Defaults to `403` and `404`, meaning that `yii\web\HttpException:403` and 
+This optional parameter is an array of HTTP status codes that this log target is NOT interested in. This is a shortcut 
+for the `except` parameter to make it easier. Defaults to `403` and `404`, meaning that `yii\web\HttpException:403` and 
 `yii\web\HttpException:404` messages will be excluded from the `categories` parameter.
 
 ## Credits
