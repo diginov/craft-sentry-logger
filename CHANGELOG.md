@@ -1,5 +1,13 @@
 # Release Notes for Sentry Logger
 
+## 1.1.1 - 2021-02-03
+
+### Added
+- Added a button to test the current plugin configuration.
+
+### Changed
+- Updated and cleaned documentation.
+
 ## 1.1.0 - 2021-01-27
 
 > {warning} Read through the [documentation](https://github.com/diginov/craft-sentry-logger/blob/master/README.md) if you are using the advanced configuration method before updating.
