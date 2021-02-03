@@ -12,6 +12,9 @@ use Sentry\State\Scope;
 
 final class CraftIntegration implements \Sentry\Integration\IntegrationInterface
 {
+    // Public Methods
+    // =========================================================================
+
     /**
      * @inheritdoc
      */
@@ -45,6 +48,9 @@ final class CraftIntegration implements \Sentry\Integration\IntegrationInterface
             return $event;
         });
     }
+
+    // Private Methods
+    // =========================================================================
 
     /**
      * Add source Twig template to stack trace frames vars when Twig template is compiled
