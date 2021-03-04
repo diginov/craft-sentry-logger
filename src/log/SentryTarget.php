@@ -66,7 +66,7 @@ class SentryTarget extends \yii\log\Target
             ];
 
             if (is_array($this->exceptCodes)) {
-                foreach($this->exceptCodes as $exceptCode) {
+                foreach ($this->exceptCodes as $exceptCode) {
                     if (is_numeric($exceptCode) && strlen($exceptCode) == 3) {
                         $except[] = HttpException::class . ':' . $exceptCode;
                     }
@@ -117,7 +117,7 @@ class SentryTarget extends \yii\log\Target
         $request = Craft::$app->getRequest();
         $messages = static::filterMessages($this->messages, $this->getLevels(), $this->categories, $this->except);
 
-        foreach($messages as $message) {
+        foreach ($messages as $message) {
             Sentry\withScope(function(Scope $scope) use ($user, $groups, $request, $message) {
                 [$message, $level, $category, $timestamp, $traces, $memory] = $message;
 
@@ -190,7 +190,7 @@ class SentryTarget extends \yii\log\Target
     public function setLevels($levels)
     {
         if (is_array($levels)) {
-            foreach($levels as $key => $level) {
+            foreach ($levels as $key => $level) {
                 if (!in_array($level, ['error', 'warning'])) {
                     unset($levels[$key]);
                 }

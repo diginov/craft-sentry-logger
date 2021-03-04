@@ -49,7 +49,7 @@ class Plugin extends \craft\base\Plugin
     {
         $dispatcher = Craft::$app->getLog();
 
-        foreach($dispatcher->targets as $target) {
+        foreach ($dispatcher->targets as $target) {
             if ($target instanceof SentryTarget) {
                 $this->isAdvancedConfig = true;
                 break;

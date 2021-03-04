@@ -65,7 +65,7 @@ final class CraftIntegration implements \Sentry\Integration\IntegrationInterface
             return;
         }
 
-        foreach($stacktrace->getFrames() as $frame) {
+        foreach ($stacktrace->getFrames() as $frame) {
             if ($frame->isInternal() || null === $frame->getAbsoluteFilePath()) {
                 continue;
             }
