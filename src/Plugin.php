@@ -47,6 +47,8 @@ class Plugin extends \craft\base\Plugin
      */
     public function init()
     {
+        parent::init();
+
         $dispatcher = Craft::$app->getLog();
 
         foreach ($dispatcher->targets as $target) {
