@@ -82,9 +82,9 @@
 
 <hr>
 
-{% set button = '<button type="button" class="btn formsubmit" data-action="' ~ plugin.handle ~ '/test">' ~ "Send test data to Sentry" |t(plugin.handle) ~ '</button>' %}
+{% set button = '<button type="button" class="btn formsubmit" data-action="' ~ plugin.handle ~ '/test">' ~ "Create test data" |t(plugin.handle) ~ '</button>' %}
 
 {{ forms.field({
     label: "Configuration test" |t(plugin.handle),
-    instructions: "Creates a dummy error and warning that will be sent to Sentry based on your current configuration." |t(plugin.handle),
+    instructions: "Creates a dummy error and warning which may or may not be sent to Sentry based on your current configuration." |t(plugin.handle),
 }, button) }}

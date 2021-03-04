@@ -20,7 +20,7 @@ class TestController extends \craft\web\Controller
         Craft::error(Craft::t('sentry-logger', 'This is an error test'), 'Test');
         Craft::warning(Craft::t('sentry-logger', 'This is a warning test'), 'Test');
 
-        Craft::$app->getSession()->setNotice(Craft::t('sentry-logger', 'Test data sent to Sentry.'));
+        Craft::$app->getSession()->setNotice(Craft::t('sentry-logger', 'Test data created.'));
 
         return $this->redirectToPostedUrl();
     }
