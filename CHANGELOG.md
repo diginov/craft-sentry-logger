@@ -1,5 +1,15 @@
 # Release Notes for Sentry Logger
 
+## 1.1.2 - 2021-03-04
+
+### Changed
+- Updated the required version of Sentry SDK.
+- Updated texts and translations.
+- Code syntax and cleanup.
+
+### Fixed
+- Fixed missing parent plugin init.
+
 ## 1.1.1 - 2021-02-03
 
 ### Added
