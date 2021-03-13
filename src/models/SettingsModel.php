@@ -31,6 +31,11 @@ class SettingsModel extends \craft\base\Model
     public $release;
 
     /**
+     * @var string
+     */
+    public $environment;
+
+    /**
      * @var array
      */
     public $levels = ['error', 'warning'];
@@ -50,7 +55,7 @@ class SettingsModel extends \craft\base\Model
     {
         return [
             [
-                ['dsn', 'release'],
+                ['dsn', 'release', 'environment'],
                 'trim',
             ],[
                 ['enabled', 'anonymous'],

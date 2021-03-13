@@ -42,6 +42,11 @@ class SentryTarget extends \yii\log\Target
     public $release;
 
     /**
+     * @var string
+     */
+    public $environment;
+
+    /**
      * @var array
      */
     public $exceptCodes = [403, 404];
@@ -79,7 +84,7 @@ class SentryTarget extends \yii\log\Target
         $options = [
             'dsn'                  => $this->dsn ?: null,
             'release'              => $this->release ?: null,
-            'environment'          => CRAFT_ENVIRONMENT,
+            'environment'          => $this->environment ?: CRAFT_ENVIRONMENT,
             'context_lines'        => 10,
             'send_default_pii'     => !$this->anonymous,
             'default_integrations' => false,

@@ -65,6 +65,7 @@ class Plugin extends \craft\base\Plugin
                 $target = ArrayHelper::merge($settings->toArray(), ['class' => SentryTarget::class]);
                 $target['dsn'] = Craft::parseEnv($target['dsn']);
                 $target['release'] = Craft::parseEnv($target['release']);
+                $target['environment'] = Craft::parseEnv($target['environment']);
                 $dispatcher->targets['__craftSentryTarget'] = Craft::createObject($target);
             }
         }
