@@ -1,5 +1,14 @@
 # Release Notes for Sentry Logger
 
+## 1.1.3 - 2021-03-13
+
+### Added
+- Added the `environment` configuration parameter.
+
+### Changed
+- Updated documentation and examples.
+- Updated plugin settings with more parameters.
+
 ## 1.1.2 - 2021-03-04
 
 ### Changed
