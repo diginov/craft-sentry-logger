@@ -23,6 +23,7 @@ Pushes Craft CMS logs to [Sentry](https://sentry.io/) through a native Yii 2 log
 - Script executed including parameters (console request)
 - User ID, email, username and groups (sensitive data)
 - Visitor cookies (sensitive data)
+- Database driver type and version
 - Visitor IP address (sensitive data)
 - Craft edition, licence, schema and version
 - Craft `devMode` status taken from general config
@@ -60,6 +61,7 @@ return [
         'anonymous' => false,
         'dsn' => App::env('SENTRY_DSN'),
         'release' => App::env('SENTRY_RELEASE'),
+        'environment' => App::env('SENTRY_ENVIRONMENT'),
         'levels' => ['error', 'warning'],
         'exceptCodes' => [403, 404],
     ],
@@ -107,6 +109,7 @@ return [
                         'anonymous' => false,
                         'dsn' => App::env('SENTRY_DSN'),
                         'release' => App::env('SENTRY_RELEASE'),
+                        'environment' => App::env('SENTRY_ENVIRONMENT'),
                         'levels' => ['error', 'warning'],
                         'exceptCodes' => [403, 404],
                     ]);
@@ -138,6 +141,7 @@ return [
                     'anonymous' => false,
                     'dsn' => App::env('SENTRY_DSN'),
                     'release' => App::env('SENTRY_RELEASE'),
+                    'environment' => App::env('SENTRY_ENVIRONMENT'),
                     'levels' => ['error', 'warning'],
                     'exceptCodes' => [403, 404],
                 ];
@@ -171,8 +175,14 @@ This required parameter is a string that contain the Client Key (DSN) that Sentr
 
 ### `release`
 
-This optional parameter is a string that contain the version of your code that is deployed to an environment. See more 
-information about [releases](https://docs.sentry.io/platforms/php/configuration/releases/) in Sentry documentation.
+This optional parameter is a string that contain the version of your application that is deployed to an environment. 
+See more information about [releases](https://docs.sentry.io/product/releases/) in Sentry documentation.
+
+### `environment`
+
+This optional parameter is a string that contain the environment tag that designate where your application is deployed. 
+Defaults to `CRAFT_ENVIRONMENT`. See more information about [environment](https://docs.sentry.io/product/sentry-basics/environments/) 
+in Sentry documentation.
 
 ### `levels`
 
