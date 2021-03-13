@@ -50,6 +50,28 @@
     warning: 'dsn' in overrides |keys ? configWarning(plugin, 'dsn'),
 }) }}
 
+{{ forms.autosuggestField({
+    label: "Sentry Release" |t(plugin.handle),
+    instructions: "The version of the application that is deployed to your environment. Can be left blank to not use this feature." |t(plugin.handle),
+    id: 'release',
+    name: 'release',
+    value: settings.release,
+    suggestEnvVars: true,
+    errors: settings.getErrors('release'),
+    warning: 'release' in overrides |keys ? configWarning(plugin, 'release'),
+}) }}
+
+{{ forms.autosuggestField({
+    label: "Sentry Environment" |t(plugin.handle),
+    instructions: "The environment tag that designate where your application is deployed. Defaults to the current Craft environment." |t(plugin.handle),
+    id: 'environment',
+    name: 'environment',
+    value: settings.environment,
+    suggestEnvVars: true,
+    errors: settings.getErrors('environment'),
+    warning: 'environment' in overrides |keys ? configWarning(plugin, 'environment'),
+}) }}
+
 {{ forms.hidden({
     id: 'levels',
     name: 'levels',
