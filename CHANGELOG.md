@@ -1,5 +1,12 @@
 # Release Notes for Sentry Logger
 
+## 1.1.4 - 2021-03-25
+
+### Changed
+- Optimized the way Sentry integrations are loaded.
+- Updated additional data pushed to Sentry.
+- Updated and cleaned documentation.
+
 ## 1.1.3 - 2021-03-13
 
 ### Added
