@@ -141,6 +141,7 @@ class SentryTarget extends \yii\log\Target
                     'Craft Schema'  => Craft::$app->getInstalledSchemaVersion(),
                     'Craft Version' => Craft::$app->getVersion(),
                     'Dev Mode'      => Craft::$app->getConfig()->getGeneral()->devMode ? 'Yes' : 'No',
+                    'Environment'   => CRAFT_ENVIRONMENT,
                     'PHP Version'   => App::phpVersion(),
                     'Request Type'  => $request->getIsConsoleRequest() ? 'Console' : ($request->getIsAjax() ? 'Ajax' : 'Web'),
                     'Twig Version'  => TwigEnvironment::VERSION,
