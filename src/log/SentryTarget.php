@@ -6,10 +6,6 @@ use Craft;
 use craft\helpers\App;
 
 use Sentry;
-use Sentry\Integration\RequestIntegration;
-use Sentry\Integration\TransactionIntegration;
-use Sentry\Integration\FrameContextifierIntegration;
-use Sentry\Integration\EnvironmentIntegration;
 use Sentry\Severity;
 use Sentry\State\Scope;
 
@@ -87,15 +83,11 @@ class SentryTarget extends \yii\log\Target
             'environment'          => $this->environment ?: CRAFT_ENVIRONMENT,
             'context_lines'        => 10,
             'send_default_pii'     => !$this->anonymous,
-            'default_integrations' => false,
+            'default_integrations' => true,
 
-            'integrations' => [
-                new CraftIntegration(),
-                new RequestIntegration(),
-                new TransactionIntegration(),
-                new FrameContextifierIntegration(),
-                new EnvironmentIntegration(),
-            ],
+            'integrations' => function (array $integrations) {
+                return self::getIntegrations($integrations);
+            },
         ];
 
         Sentry\init($options);
@@ -209,7 +201,22 @@ class SentryTarget extends \yii\log\Target
     // =========================================================================
 
     /**
-     * Translates log level to Sentry Severity.
+     * Returns Sentry Integrations to be loaded.
+     *
+     * @param Sentry\Integration\IntegrationInterface[] $integrations
+     * @return Sentry\Integration\IntegrationInterface[]
+     */
+    protected function getIntegrations(array $integrations): array
+    {
+        $integrations[] = new CraftIntegration();
+
+        return array_filter($integrations, static function (\Sentry\Integration\IntegrationInterface $integration): bool {
+            return !$integration instanceof \Sentry\Integration\AbstractErrorListenerIntegration;
+        });
+    }
+
+    /**
+     * Translates log level to Sentry Severity level.
      *
      * @param int $level
      * @return Severity
