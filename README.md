@@ -22,9 +22,9 @@ Pushes Craft CMS logs to [Sentry](https://sentry.io/) through a native Yii 2 log
 - Request route including query string
 - Script executed including parameters (console request)
 - User ID, email, username and groups (sensitive data)
+- Visitor IP address (sensitive data)
 - Visitor cookies (sensitive data)
 - Database driver type and version
-- Visitor IP address (sensitive data)
 - Craft edition, licence, schema and version
 - Craft `devMode` status taken from general config
 - Craft current environment taken from `CRAFT_ENVIRONMENT`
@@ -200,7 +200,7 @@ such as `yii\db\Connection`.
 ### `except`
 
 This optional parameter is an array of message categories that this log target is NOT interested in. Defaults to empty, 
-meaning no uninteresting messages. If this property is not empty, then any category listed here will be excluded from 
+meaning no uninteresting categories. If this property is not empty, then any category listed here will be excluded from 
 the `categories` parameter. You can use an asterisk at the end of a category so that the category can be used to match 
 those categories sharing the same common prefix. For example, `yii\db*` will match categories starting with `yii\db\`, 
 such as `yii\db\Connection`.
@@ -209,7 +209,7 @@ such as `yii\db\Connection`.
 
 This optional parameter is an array of HTTP status codes that this log target is NOT interested in. This is a shortcut 
 for the `except` parameter to make it easier. Defaults to `403` and `404`, meaning that `yii\web\HttpException:403` and 
-`yii\web\HttpException:404` messages will be excluded from the `categories` parameter.
+`yii\web\HttpException:404` categories will be excluded from the `categories` parameter.
 
 ## Credits
 

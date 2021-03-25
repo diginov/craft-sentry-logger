@@ -4,9 +4,6 @@ namespace diginov\sentry\controllers;
 
 use Craft;
 
-/**
- * TestController
- */
 class TestController extends \craft\web\Controller
 {
     // Public Methods
