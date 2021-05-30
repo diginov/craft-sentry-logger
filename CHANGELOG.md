@@ -1,5 +1,13 @@
 # Release Notes for Sentry Logger
 
+## 1.1.5 - 2021-05-25
+
+### Added
+- Added the `exceptPatterns` configuration parameter.
+
+### Changed
+- Updated documentation about the `exceptPatterns` parameter.
+
 ## 1.1.4 - 2021-03-25
 
 ### Changed
