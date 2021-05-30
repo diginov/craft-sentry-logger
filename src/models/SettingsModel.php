@@ -45,6 +45,11 @@ class SettingsModel extends \craft\base\Model
      */
     public $exceptCodes = [403, 404];
 
+    /**
+     * @var array
+     */
+    public $exceptPatterns = [];
+
     // Public Methods
     // =========================================================================
 
@@ -64,13 +69,13 @@ class SettingsModel extends \craft\base\Model
                     return (bool) $value;
                 },
             ],[
-                ['levels', 'exceptCodes'],
+                ['levels', 'exceptCodes', 'exceptPatterns'],
                 'filter',
                 'filter' => function($value) {
                     return is_string($value) ? explode(',', $value) : $value;
                 },
             ],[
-                ['levels', 'exceptCodes'],
+                ['levels', 'exceptCodes', 'exceptPatterns'],
                 'filter',
                 'filter' => function($value) {
                     return is_array($value) ? array_map('trim', $value) : $value;
@@ -96,7 +101,7 @@ class SettingsModel extends \craft\base\Model
                 'exceptCodes',
                 function($attribute, $params, $validator) {
                     foreach($this->$attribute as $value) {
-                        if (!empty($value) && (!is_numeric($value) || strlen((int) $value) != 3)) {
+                        if (!empty($value) && !preg_match('/[0-9{3}]/', $value)) {
                             $this->addError($attribute, Craft::t('yii', '{attribute} is invalid.', [
                                 'attribute' => Craft::t('sentry-logger', 'Excluded HTTP status codes'),
                             ]));
@@ -117,6 +122,17 @@ class SettingsModel extends \craft\base\Model
 
                     return $value;
                 },
+            ],[
+                'exceptPatterns',
+                function($attribute, $params, $validator) {
+                    foreach($this->$attribute as $value) {
+                        if (@preg_match("~{$value}~", null) === false) {
+                            $this->addError($attribute, Craft::t('yii', '{attribute} is invalid.', [
+                                'attribute' => Craft::t('sentry-logger', 'Excluded search patterns'),
+                            ]));
+                        }
+                    }
+                }
             ],
         ];
     }

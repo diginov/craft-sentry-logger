@@ -25,7 +25,7 @@
     name: 'enabled',
     on: settings.enabled,
     errors: settings.getErrors('enabled'),
-    warning: 'enabled' in overrides |keys ? configWarning(plugin, 'enabled')
+    warning: 'enabled' in overrides |keys ? configWarning(plugin, 'enabled'),
 }) }}
 
 {{ forms.lightswitchField({
@@ -35,7 +35,7 @@
     name: 'anonymous',
     on: settings.anonymous,
     errors: settings.getErrors('anonymous'),
-    warning: 'anonymous' in overrides |keys ? configWarning(plugin, 'anonymous')
+    warning: 'anonymous' in overrides |keys ? configWarning(plugin, 'anonymous'),
 }) }}
 
 {{ forms.autosuggestField({
@@ -99,7 +99,17 @@
     placeholder: '403, 404',
     value: settings.exceptCodes |join(', '),
     errors: settings.getErrors('exceptCodes'),
-    warning: 'exceptCodes' in overrides |keys ? configWarning(plugin, 'exceptCodes')
+    warning: 'exceptCodes' in overrides |keys ? configWarning(plugin, 'exceptCodes'),
+}) }}
+
+{{ forms.textField({
+    label: "Excluded search patterns" |t(plugin.handle),
+    instructions: "Comma separated list of search patterns (regex) that should not be sent to Sentry." |t(plugin.handle),
+    id: 'exceptPatterns',
+    name: 'exceptPatterns',
+    value: settings.exceptPatterns |join(', '),
+    errors: settings.getErrors('exceptPatterns'),
+    warning: 'exceptPatterns' in overrides |keys ? configWarning(plugin, 'exceptPatterns'),
 }) }}
 
 <hr>

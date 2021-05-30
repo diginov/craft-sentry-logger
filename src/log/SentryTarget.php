@@ -47,6 +47,11 @@ class SentryTarget extends \yii\log\Target
      */
     public $exceptCodes = [403, 404];
 
+    /**
+     * @var array
+     */
+    public $exceptPatterns = [];
+
     // Public Methods
     // =========================================================================
 
@@ -61,21 +66,32 @@ class SentryTarget extends \yii\log\Target
             return;
         }
 
-        if (is_array($this->except)) {
-            $except = [
-                PhpMessageSource::class . ':*',
-            ];
-
-            if (is_array($this->exceptCodes)) {
-                foreach ($this->exceptCodes as $exceptCode) {
-                    if (is_numeric($exceptCode) && strlen($exceptCode) == 3) {
-                        $except[] = HttpException::class . ':' . $exceptCode;
-                    }
-                }
-            }
-
-            $this->except = array_unique(array_merge($this->except, $except));
+        if (is_string($this->except)) {
+            $this->except = explode(',', $this->except);
+            $this->except = array_map('trim', $this->except);
         }
+
+        if (is_string($this->exceptCodes)) {
+            $this->exceptCodes = explode(',', $this->exceptCodes);
+            $this->exceptCodes = array_map('trim', $this->exceptCodes);
+        }
+
+        if (is_string($this->exceptPatterns)) {
+            $this->exceptPatterns = explode(',', $this->exceptPatterns);
+            $this->exceptPatterns = array_map('trim', $this->exceptPatterns);
+        }
+
+        $except = [
+            PhpMessageSource::class . ':*',
+        ];
+
+        foreach ($this->exceptCodes as $exceptCode) {
+            if (preg_match('/[0-9]{3}]/', $exceptCode)) {
+                $except[] = HttpException::class . ':' . $exceptCode;
+            }
+        }
+
+        $this->except = array_unique(array_merge($this->except, $except));
 
         $options = [
             'dsn'                  => $this->dsn ?: null,
@@ -117,6 +133,12 @@ class SentryTarget extends \yii\log\Target
         foreach ($messages as $message) {
             Sentry\withScope(function(Scope $scope) use ($user, $groups, $request, $message) {
                 [$message, $level, $category, $timestamp, $traces, $memory] = $message;
+
+                foreach($this->exceptPatterns as $exceptPattern) {
+                    if (!empty($exceptPattern) && @preg_match("~{$exceptPattern}~", $message) === 1) {
+                        return;
+                    }
+                }
 
                 $scope->setTag('app.name', Craft::$app->getSystemName());
 
