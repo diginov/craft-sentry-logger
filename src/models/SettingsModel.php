@@ -101,7 +101,7 @@ class SettingsModel extends \craft\base\Model
                 'exceptCodes',
                 function($attribute, $params, $validator) {
                     foreach($this->$attribute as $value) {
-                        if (!empty($value) && !preg_match('/[0-9{3}]/', $value)) {
+                        if (!empty($value) && !preg_match('/[0-9]{3}/', $value)) {
                             $this->addError($attribute, Craft::t('yii', '{attribute} is invalid.', [
                                 'attribute' => Craft::t('sentry-logger', 'Excluded HTTP status codes'),
                             ]));
