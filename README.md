@@ -2,7 +2,7 @@
 
 # Sentry Logger for Craft CMS
 
-Pushes Craft CMS logs to [Sentry](https://sentry.io/) through a native Yii 2 log target.
+Pushes Craft CMS logs to [Sentry](https://sentry.io/) through a real Yii 2 log target.
 
 <img src="screenshot.png" width="500" alt="Sentry Logger Screenshot">
 
@@ -210,6 +210,13 @@ such as `yii\db\Connection`.
 This optional parameter is an array of HTTP status codes that this log target is NOT interested in. This is a shortcut 
 for the `except` parameter to make it easier. Defaults to `403` and `404`, meaning that `yii\web\HttpException:403` and 
 `yii\web\HttpException:404` categories will be excluded from the `categories` parameter.
+
+### `exceptPatterns`
+
+This optional parameter is an array of search patterns (regex) that this log target is NOT interested in. Defaults to 
+empty, meaning no uninteresting search patterns. These search patterns are tested against the message of an exception, 
+error or warning. This is useful for filtering out messages sent without an exception code such as those sent by the 
+`Craft::error()` and `Craft::warning()` methods.
 
 ## Credits
 
