@@ -1,5 +1,10 @@
 # Release Notes for Sentry Logger
 
+## 1.1.6 - 2021-05-30
+
+### Fixed
+- Fixed excluded HTTP status codes validation.
+
 ## 1.1.5 - 2021-05-25
 
 ### Added
