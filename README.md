@@ -47,7 +47,7 @@ php craft plugin/install sentry-logger
 ## Basic configuration
 
 You can configure the plugin settings directly in the CP or you can create a `config/sentry-logger.php` config file 
-with the following contents:
+with the following contents. Make sure to update your `.env` environment file accordingly with the correct values.
 
 ```php
 <?php
