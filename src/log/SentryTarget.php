@@ -182,13 +182,17 @@ class SentryTarget extends \yii\log\Target
                     $scope->setExtra('Request Route', $request->getAbsoluteUrl());
                 }
 
-                $db = Craft::$app->getDb();
-                $dbVersion = App::normalizeVersion($db->getSchema()->getServerVersion());
+                try {
+                    $db = Craft::$app->getDb();
+                    $dbVersion = App::normalizeVersion($db->getSchema()->getServerVersion());
 
-                if ($db->getIsMysql()) {
-                    $scope->setExtra('MySQL Version', $dbVersion);
-                } else {
-                    $scope->setExtra('PostgreSQL Version', $dbVersion);
+                    if ($db->getIsMysql()) {
+                        $scope->setExtra('MySQL Version', $dbVersion);
+                    } else {
+                        $scope->setExtra('PostgreSQL Version', $dbVersion);
+                    }
+                } catch (\Throwable $e) {
+                    // Database is unavailable. Continue and send original error...
                 }
 
                 if ($message instanceof \Throwable) {
