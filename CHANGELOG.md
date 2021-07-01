@@ -1,5 +1,10 @@
 # Release Notes for Sentry Logger
 
+## 1.1.7 - 2021-07-01
+
+### Fixed
+- Database issues no longer prevent errors from being sent.
+
 ## 1.1.6 - 2021-05-30
 
 ### Fixed
