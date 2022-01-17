@@ -29,11 +29,17 @@
     "require": {
         "php": "^7.2 || ^8.0",
         "craftcms/cms": "^3.5.0",
-        "sentry/sdk": "^3.1.0"
+        "sentry/sdk": "^3.1.1"
     },
     "autoload": {
         "psr-4": {
             "diginov\\sentry\\": "src/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer": true,
+            "craftcms/plugin-installer": true
         }
     },
     "extra": {
