@@ -10,8 +10,9 @@ Pushes Craft CMS logs to [Sentry](https://sentry.io/) through a real Yii 2 log t
 
 - Updated to the latest Sentry SDK version 3
 - Native Yii 2 log target that is fully customisable
-- All errors and warnings for each request are sent 
+- All errors and warnings for each request are sent
 - Plugin settings can be defined in the CP or with a config file
+- Options passed when Sentry SDK initializes can be customized
 - Calls for `Craft::error()` and `Craft::warning()` are sent and categorized
 - Anonymous option to prevent sensitive visitors and users data from being sent to Sentry
 
@@ -25,6 +26,7 @@ Pushes Craft CMS logs to [Sentry](https://sentry.io/) through a real Yii 2 log t
 - Visitor IP address (sensitive data)
 - Visitor cookies (sensitive data)
 - Database driver type and version
+- Image driver type and version
 - Craft edition, licence, schema and version
 - Craft `devMode` status taken from general config
 - Craft current environment taken from `CRAFT_ENVIRONMENT`
@@ -36,7 +38,7 @@ This plugin requires PHP 7.2 or later and Craft CMS 3.5 or later.
 
 ## Installation
 
-To install this plugin, search for **Sentry Logger** on the Craft Plugin Store and click **Install** or run the 
+To install this plugin, search for **Sentry Logger** on the Craft Plugin Store and click **Install** or run the
 following terminal commands in your Craft project folder to install it with Composer:
 
 ```bash
@@ -46,7 +48,7 @@ php craft plugin/install sentry-logger
 
 ## Basic configuration
 
-You can configure the plugin settings directly in the CP or you can create a `config/sentry-logger.php` config file 
+You can configure the plugin settings directly in the CP or you can create a `config/sentry-logger.php` config file
 with the following contents. Make sure to update your `.env` environment file accordingly with the correct values.
 
 ```php
@@ -63,7 +65,9 @@ return [
         'release' => App::env('SENTRY_RELEASE'),
         'environment' => App::env('SENTRY_ENVIRONMENT'),
         'levels' => ['error', 'warning'],
+        'options' => [],
         'exceptCodes' => [403, 404],
+        'exceptPatterns' => [],
     ],
 
     'staging' => [
@@ -79,10 +83,10 @@ return [
 
 ## Advanced configuration
 
-This is a better method because it adds this Sentry log target to the existing log component before loading any Craft 
+This is a better method because it adds this Sentry log target to the existing log component before loading any Craft
 plugins or modules. This way you are assured that all logs are sent to Sentry.
 
-Please note that this method override the basic configuration method. 
+Please note that this method override the basic configuration method.
 
 To activate the advanced configuration, extend the `log` component in your existing `config/app.php` config file:
 
@@ -105,13 +109,15 @@ return [
 
                     return Craft::createObject([
                         'class' => 'diginov\\sentry\\log\\SentryTarget',
-                        'enabled' => CRAFT_ENVIRONMENT != 'dev',
+                        'enabled' => CRAFT_ENVIRONMENT !== 'dev',
                         'anonymous' => false,
                         'dsn' => App::env('SENTRY_DSN'),
                         'release' => App::env('SENTRY_RELEASE'),
                         'environment' => App::env('SENTRY_ENVIRONMENT'),
                         'levels' => ['error', 'warning'],
+                        'options' => [],
                         'exceptCodes' => [403, 404],
+                        'exceptPatterns' => [],
                     ]);
                 },
             ],
@@ -137,13 +143,15 @@ return [
             if (class_exists('diginov\\sentry\\log\\SentryTarget')) {
                 $config['targets'][] = [
                     'class' => 'diginov\\sentry\\log\\SentryTarget',
-                    'enabled' => CRAFT_ENVIRONMENT != 'dev',
+                    'enabled' => CRAFT_ENVIRONMENT !== 'dev',
                     'anonymous' => false,
                     'dsn' => App::env('SENTRY_DSN'),
                     'release' => App::env('SENTRY_RELEASE'),
                     'environment' => App::env('SENTRY_ENVIRONMENT'),
                     'levels' => ['error', 'warning'],
+                    'options' => [],
                     'exceptCodes' => [403, 404],
+                    'exceptPatterns' => [],
                 ];
             }
 
@@ -156,8 +164,8 @@ return [
 
 ## Configuration parameters
 
-This plugin adds a native Yii 2 log target that is an instance of the [yii\log\Target](https://www.yiiframework.com/doc/api/2.0/yii-log-target) 
-class. See the [Yii 2 API Documentation](https://www.yiiframework.com/doc/api/2.0/yii-log-target) for all available 
+This plugin adds a native Yii 2 log target that is an instance of the [yii\log\Target](https://www.yiiframework.com/doc/api/2.0/yii-log-target)
+class. See the [Yii 2 API Documentation](https://www.yiiframework.com/doc/api/2.0/yii-log-target) for all available
 properties.
 
 ### `enabled`
@@ -166,7 +174,7 @@ This required parameter is a boolean that indicates whether this log target is e
 
 ### `anonymous`
 
-This optional parameter is a boolean that indicates, when enabled, that this log target will NOT send sensitive visitors 
+This optional parameter is a boolean that indicates, when enabled, that this log target will NOT send sensitive visitors
 and users data to Sentry.
 
 ### `dsn`
@@ -175,51 +183,57 @@ This required parameter is a string that contain the Client Key (DSN) that Sentr
 
 ### `release`
 
-This optional parameter is a string that contain the version of your application that is deployed to an environment. 
+This optional parameter is a string that contain the version of your application that is deployed to an environment.
 See more information about [releases](https://docs.sentry.io/product/releases/) in Sentry documentation.
 
 ### `environment`
 
-This optional parameter is a string that contain the environment tag that designate where your application is deployed. 
-Defaults to `CRAFT_ENVIRONMENT`. See more information about [environment](https://docs.sentry.io/product/sentry-basics/environments/) 
+This optional parameter is a string that contain the environment tag that designate where your application is deployed.
+Defaults to `CRAFT_ENVIRONMENT`. See more information about [environment](https://docs.sentry.io/product/sentry-basics/environments/)
 in Sentry documentation.
+
+### `options`
+
+This optional parameter is an array of client options that will be passed to the Sentry SDK when it initializes. See
+more information about [available options](https://docs.sentry.io/platforms/php/configuration/options/) in Sentry
+documentation.
 
 ### `levels`
 
-This required parameter is an array of log level names that this log target is interested in. Defaults to `error` and 
-`warning`. We have intentionally disabled reporting `info`, `profile` and `debug` log levels to Sentry because Craft 
+This required parameter is an array of log level names that this log target is interested in. Defaults to `error` and
+`warning`. We have intentionally disabled reporting `info`, `profile` and `debug` log levels to Sentry because Craft
 generates a lot of messages for these log levels.
 
 ### `categories`
 
-This optional parameter is an array of message categories that this log target is interested in. Defaults to empty, 
-meaning all categories. You can use an asterisk at the end of a category so that the category may be used to match 
-those categories sharing the same common prefix. For example, `yii\db*` will match categories starting with `yii\db\`, 
+This optional parameter is an array of message categories that this log target is interested in. Defaults to empty,
+meaning all categories. You can use an asterisk at the end of a category so that the category may be used to match
+those categories sharing the same common prefix. For example, `yii\db*` will match categories starting with `yii\db\`,
 such as `yii\db\Connection`.
 
 ### `except`
 
-This optional parameter is an array of message categories that this log target is NOT interested in. Defaults to empty, 
-meaning no uninteresting categories. If this property is not empty, then any category listed here will be excluded from 
-the `categories` parameter. You can use an asterisk at the end of a category so that the category can be used to match 
-those categories sharing the same common prefix. For example, `yii\db*` will match categories starting with `yii\db\`, 
+This optional parameter is an array of message categories that this log target is NOT interested in. Defaults to empty,
+meaning no uninteresting categories. If this property is not empty, then any category listed here will be excluded from
+the `categories` parameter. You can use an asterisk at the end of a category so that the category can be used to match
+those categories sharing the same common prefix. For example, `yii\db*` will match categories starting with `yii\db\`,
 such as `yii\db\Connection`.
 
 ### `exceptCodes`
 
-This optional parameter is an array of HTTP status codes that this log target is NOT interested in. This is a shortcut 
-for the `except` parameter to make it easier. Defaults to `403` and `404`, meaning that `yii\web\HttpException:403` and 
+This optional parameter is an array of HTTP status codes that this log target is NOT interested in. This is a shortcut
+for the `except` parameter to make it easier. Defaults to `403` and `404`, meaning that `yii\web\HttpException:403` and
 `yii\web\HttpException:404` categories will be excluded from the `categories` parameter.
 
 ### `exceptPatterns`
 
-This optional parameter is an array of search patterns (regex) that this log target is NOT interested in. Defaults to 
-empty, meaning no uninteresting search patterns. These search patterns are tested against the message of an exception, 
-error or warning. This is useful for filtering out messages sent without an exception code such as those sent by the 
+This optional parameter is an array of search patterns (regex) that this log target is NOT interested in. Defaults to
+empty, meaning no uninteresting search patterns. These search patterns are tested against the message of an exception,
+error or warning. This is useful for filtering out messages sent without an exception code such as those sent by the
 `Craft::error()` and `Craft::warning()` methods.
 
 ## Credits
 
-Inspired by the [olegtsvetkov/yii2-sentry](https://github.com/olegtsvetkov/yii2-sentry) package and by official 
-[sentry/sentry-symfony](https://github.com/getsentry/sentry-symfony) and 
+Inspired by the [olegtsvetkov/yii2-sentry](https://github.com/olegtsvetkov/yii2-sentry) package and by official
+[sentry/sentry-symfony](https://github.com/getsentry/sentry-symfony) and
 [sentry/sentry-laravel](https://github.com/getsentry/sentry-laravel) packages. 
