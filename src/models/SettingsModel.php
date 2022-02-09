@@ -15,47 +15,47 @@ class SettingsModel extends \craft\base\Model
     /**
      * @var bool
      */
-    public $enabled = true;
+    public bool $enabled = true;
 
     /**
      * @var bool
      */
-    public $anonymous = false;
+    public bool $anonymous = false;
 
     /**
      * @var string|null
      */
-    public $dsn = null;
+    public ?string $dsn = null;
 
     /**
      * @var string|null
      */
-    public $release = null;
+    public ?string $release = null;
 
     /**
      * @var string|null
      */
-    public $environment = null;
+    public ?string $environment = null;
 
     /**
      * @var array
      */
-    public $options = [];
+    public array $options = [];
 
     /**
      * @var array
      */
-    public $levels = ['error', 'warning'];
+    public array $levels = ['error', 'warning'];
 
     /**
      * @var array
      */
-    public $exceptCodes = [403, 404];
+    public array $exceptCodes = [403, 404];
 
     /**
      * @var array
      */
-    public $exceptPatterns = [];
+    public array $exceptPatterns = [];
 
     // Public Methods
     // =========================================================================

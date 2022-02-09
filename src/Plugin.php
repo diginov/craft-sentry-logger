@@ -18,17 +18,17 @@ class Plugin extends \craft\base\Plugin
     /**
      * @inheritdoc
      */
-    public $schemaVersion = '1.0.0';
+    public string $schemaVersion = '1.0.0';
 
     /**
      * @inheritdoc
      */
-    public $hasCpSettings = true;
+    public bool $hasCpSettings = true;
 
     /**
      * @inheritdoc
      */
-    public $hasCpSection = false;
+    public bool $hasCpSection = false;
 
     // Protected Properties
     // =========================================================================
@@ -36,7 +36,7 @@ class Plugin extends \craft\base\Plugin
     /**
      * @var bool
      */
-    protected $isAdvancedConfig = false;
+    protected bool $isAdvancedConfig = false;
 
     // Public Methods
     // =========================================================================

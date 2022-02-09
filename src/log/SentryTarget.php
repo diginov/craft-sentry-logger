@@ -25,37 +25,37 @@ class SentryTarget extends \yii\log\Target
     /**
      * @var bool
      */
-    public $anonymous = false;
+    public bool $anonymous = false;
 
     /**
      * @var string|null
      */
-    public $dsn = null;
+    public ?string $dsn = null;
 
     /**
      * @var string|null
      */
-    public $release = null;
+    public ?string $release = null;
 
     /**
      * @var string|null
      */
-    public $environment = null;
+    public ?string $environment = null;
 
     /**
      * @var array
      */
-    public $options = [];
+    public array $options = [];
 
     /**
      * @var array
      */
-    public $exceptCodes = [403, 404];
+    public array $exceptCodes = [403, 404];
 
     /**
      * @var array
      */
-    public $exceptPatterns = [];
+    public array $exceptPatterns = [];
 
     // Public Methods
     // =========================================================================
@@ -99,7 +99,7 @@ class SentryTarget extends \yii\log\Target
         $groups = [];
 
         if ($user) {
-            $groups = array_map(function($group): string {
+            $groups = array_map(static function($group): string {
                 return $group->name;
             }, $user->getGroups());
         }
