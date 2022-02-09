@@ -57,7 +57,7 @@ final class CraftIntegration implements \Sentry\Integration\IntegrationInterface
      *
      * @param Stacktrace $stacktrace
      */
-    private function addTwigTemplateToStacktraceFrames(Stacktrace $stacktrace)
+    private function addTwigTemplateToStacktraceFrames(Stacktrace $stacktrace): void
     {
         $compiledTemplatesPath = Craft::$app->getPath()->getCompiledTemplatesPath(false);
 
@@ -101,9 +101,7 @@ final class CraftIntegration implements \Sentry\Integration\IntegrationInterface
 
                                 $seek++;
                             }
-                        } catch (\Throwable $e) {
-                            $lineNumber = null;
-                        }
+                        } catch (\Throwable $e) {}
 
                         $vars = $frame->getVars();
                         $vars['template'] = $sourceFile;

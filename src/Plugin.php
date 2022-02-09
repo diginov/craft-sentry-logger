@@ -6,9 +6,8 @@ use diginov\sentry\log\SentryTarget;
 use diginov\sentry\models\SettingsModel;
 
 use Craft;
+use craft\base\Model;
 use craft\helpers\ArrayHelper;
-
-use yii\base\InvalidConfigException;
 
 class Plugin extends \craft\base\Plugin
 {
@@ -43,9 +42,8 @@ class Plugin extends \craft\base\Plugin
 
     /**
      * @inheritdoc
-     * @throws InvalidConfigException
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
 
@@ -61,7 +59,7 @@ class Plugin extends \craft\base\Plugin
         if (!$this->isAdvancedConfig) {
             $settings = $this->getSettings();
 
-            if ($settings->validate()) {
+            if ($settings && $settings->validate()) {
                 $target = ArrayHelper::merge($settings->toArray(), ['class' => SentryTarget::class]);
                 $target['dsn'] = Craft::parseEnv($target['dsn']);
                 $target['release'] = Craft::parseEnv($target['release']);
@@ -77,17 +75,15 @@ class Plugin extends \craft\base\Plugin
     /**
      * @inheritdoc
      */
-    protected function createSettingsModel()
+    protected function createSettingsModel(): ?Model
     {
         return new SettingsModel();
     }
 
     /**
      * @inheritdoc
-     * @throws \Twig\Error\Error
-     * @throws \yii\base\Exception
      */
-    protected function settingsHtml()
+    protected function settingsHtml(): ?string
     {
         $settings = $this->getSettings();
         $overrides = Craft::$app->getConfig()->getConfigFromFile($this->handle);

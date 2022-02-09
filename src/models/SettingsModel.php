@@ -21,19 +21,24 @@ class SettingsModel extends \craft\base\Model
     public $anonymous = false;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $dsn;
+    public $dsn = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $release;
+    public $release = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $environment;
+    public $environment = null;
+
+    /**
+     * @var array
+     */
+    public $options = [];
 
     /**
      * @var array
@@ -56,30 +61,45 @@ class SettingsModel extends \craft\base\Model
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [
                 ['dsn', 'release', 'environment'],
                 'trim',
             ],[
-                ['enabled', 'anonymous'],
+                ['anonymous', 'enabled'],
                 'filter',
-                'filter' => function($value) {
+                'filter' => function($value): bool {
                     return (bool) $value;
                 },
             ],[
                 ['levels', 'exceptCodes', 'exceptPatterns'],
                 'filter',
-                'filter' => function($value) {
-                    return is_string($value) ? explode(',', $value) : $value;
+                'filter' => function($value): array {
+                    if (isset($value[0]) && count($value) === 1) {
+                        $value = explode(',', $value[0]);
+                    }
+
+                    $value = array_unique($value);
+                    $value = array_map('trim', $value);
+                    sort($value);
+
+                    return $value;
                 },
             ],[
-                ['levels', 'exceptCodes', 'exceptPatterns'],
+                'levels',
                 'filter',
-                'filter' => function($value) {
-                    return is_array($value) ? array_map('trim', $value) : $value;
+                'filter' => function($value): array {
+                    $value = array_filter($value);
+                    sort($value);
+
+                    return $value;
                 },
+            ],[
+                ['dsn', 'environment', 'release'],
+                'default',
+                'value' => null,
             ],[
                 'dsn',
                 'required',
@@ -98,6 +118,12 @@ class SettingsModel extends \craft\base\Model
                     }
                 }
             ],[
+                'levels',
+                'required',
+                'message' => Craft::t('yii', '{attribute} cannot be blank.', [
+                    'attribute' => Craft::t('sentry-logger', 'Included log levels'),
+                ]),
+            ],[
                 'exceptCodes',
                 function($attribute, $params, $validator) {
                     foreach($this->$attribute as $value) {
@@ -110,19 +136,6 @@ class SettingsModel extends \craft\base\Model
                     }
                 },
             ],[
-                'exceptCodes',
-                'filter',
-                'filter' => function($value) {
-                    $value = array_unique($value);
-
-                    if (count($value) > 1) {
-                        $value = array_filter($value);
-                        sort($value);
-                    }
-
-                    return $value;
-                },
-            ],[
                 'exceptPatterns',
                 function($attribute, $params, $validator) {
                     foreach($this->$attribute as $value) {
@@ -130,6 +143,7 @@ class SettingsModel extends \craft\base\Model
                             $this->addError($attribute, Craft::t('yii', '{attribute} is invalid.', [
                                 'attribute' => Craft::t('sentry-logger', 'Excluded search patterns'),
                             ]));
+                            break;
                         }
                     }
                 }

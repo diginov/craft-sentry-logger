@@ -74,7 +74,7 @@
 
 {{ forms.hidden({
     id: 'levels',
-    name: 'levels',
+    name: 'levels[]',
 }) }}
 
 {{ forms.checkboxSelectField({
@@ -87,6 +87,7 @@
         { label: "Warning" |t(plugin.handle), value: 'warning' },
     ],
     values: settings.levels,
+    required: true,
     errors: settings.getErrors('levels'),
     warning: 'levels' in overrides |keys ? configWarning(plugin, 'levels'),
 }) }}
@@ -95,7 +96,7 @@
     label: "Excluded HTTP status codes" |t(plugin.handle),
     instructions: "Comma separated list of HTTP status codes that should not be sent to Sentry." |t(plugin.handle),
     id: 'exceptCodes',
-    name: 'exceptCodes',
+    name: 'exceptCodes[]',
     placeholder: '403, 404',
     value: settings.exceptCodes |join(', '),
     errors: settings.getErrors('exceptCodes'),
@@ -106,7 +107,7 @@
     label: "Excluded search patterns" |t(plugin.handle),
     instructions: "Comma separated list of search patterns (regex) that should not be sent to Sentry." |t(plugin.handle),
     id: 'exceptPatterns',
-    name: 'exceptPatterns',
+    name: 'exceptPatterns[]',
     value: settings.exceptPatterns |join(', '),
     errors: settings.getErrors('exceptPatterns'),
     warning: 'exceptPatterns' in overrides |keys ? configWarning(plugin, 'exceptPatterns'),
@@ -118,5 +119,5 @@
 
 {{ forms.field({
     label: "Configuration test" |t(plugin.handle),
-    instructions: "Creates a dummy error and warning which may or may not be sent to Sentry based on your current configuration." |t(plugin.handle),
+    instructions: "Creates a dummy error and warning which may or may not be sent to Sentry based on your current configuration. Make sure to save your configuration before testing." |t(plugin.handle),
 }, button) }}

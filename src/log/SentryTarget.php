@@ -23,24 +23,29 @@ class SentryTarget extends \yii\log\Target
     // =========================================================================
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $anonymous = false;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $dsn;
+    public $dsn = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $release;
+    public $release = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    public $environment;
+    public $environment = null;
+
+    /**
+     * @var array
+     */
+    public $options = [];
 
     /**
      * @var array
@@ -58,27 +63,12 @@ class SentryTarget extends \yii\log\Target
     /**
      * @inheritdoc
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
 
         if (!$this->enabled || !$this->dsn || !$this->levels) {
             return;
-        }
-
-        if (is_string($this->except)) {
-            $this->except = explode(',', $this->except);
-            $this->except = array_map('trim', $this->except);
-        }
-
-        if (is_string($this->exceptCodes)) {
-            $this->exceptCodes = explode(',', $this->exceptCodes);
-            $this->exceptCodes = array_map('trim', $this->exceptCodes);
-        }
-
-        if (is_string($this->exceptPatterns)) {
-            $this->exceptPatterns = explode(',', $this->exceptPatterns);
-            $this->exceptPatterns = array_map('trim', $this->exceptPatterns);
         }
 
         $except = [
@@ -93,26 +83,13 @@ class SentryTarget extends \yii\log\Target
 
         $this->except = array_unique(array_merge($this->except, $except));
 
-        $options = [
-            'dsn'                  => $this->dsn ?: null,
-            'release'              => $this->release ?: null,
-            'environment'          => $this->environment ?: CRAFT_ENVIRONMENT,
-            'context_lines'        => 10,
-            'send_default_pii'     => !$this->anonymous,
-            'default_integrations' => true,
-
-            'integrations' => function (array $integrations) {
-                return self::getIntegrations($integrations);
-            },
-        ];
-
-        Sentry\init($options);
+        Sentry\init(array_merge($this->getOptions()));
     }
 
     /**
      * @inheritdoc
      */
-    public function export()
+    public function export(): void
     {
         if (!$this->enabled || !$this->dsn || !$this->levels) {
             return;
@@ -122,7 +99,7 @@ class SentryTarget extends \yii\log\Target
         $groups = [];
 
         if ($user) {
-            $groups = array_map(function($group) {
+            $groups = array_map(function($group): string {
                 return $group->name;
             }, $user->getGroups());
         }
@@ -157,43 +134,7 @@ class SentryTarget extends \yii\log\Target
                     ]);
                 }
 
-                $scope->setExtras([
-                    'App Name'      => Craft::$app->getSystemName(),
-                    'Craft Edition' => App::editionName(Craft::$app->getEdition()),
-                    'Craft Schema'  => Craft::$app->getInstalledSchemaVersion(),
-                    'Craft Version' => Craft::$app->getVersion(),
-                    'Dev Mode'      => Craft::$app->getConfig()->getGeneral()->devMode ? 'Yes' : 'No',
-                    'Environment'   => CRAFT_ENVIRONMENT,
-                    'PHP Version'   => App::phpVersion(),
-                    'Request Type'  => $request->getIsConsoleRequest() ? 'Console' : ($request->getIsAjax() ? 'Ajax' : 'Web'),
-                    'Twig Version'  => TwigEnvironment::VERSION,
-                    'Yii Version'   => Yii::getVersion(),
-                ]);
-
-                if ($request->getIsConsoleRequest()) {
-                    try {
-                        $scriptFile = $request->getScriptFile() . ' ';
-                    } catch(\Throwable $e) {
-                        $scriptFile = '';
-                    }
-
-                    $scope->setExtra('Request Command', $scriptFile . implode(' ', $request->getParams()));
-                } else {
-                    $scope->setExtra('Request Route', $request->getAbsoluteUrl());
-                }
-
-                try {
-                    $db = Craft::$app->getDb();
-                    $dbVersion = App::normalizeVersion($db->getSchema()->getServerVersion());
-
-                    if ($db->getIsMysql()) {
-                        $scope->setExtra('MySQL Version', $dbVersion);
-                    } else {
-                        $scope->setExtra('PostgreSQL Version', $dbVersion);
-                    }
-                } catch (\Throwable $e) {
-                    // Database is unavailable. Continue and send original error...
-                }
+                $scope->setExtras($this->getExtras($request));
 
                 if ($message instanceof \Throwable) {
                     Sentry\captureException($message);
@@ -211,7 +152,7 @@ class SentryTarget extends \yii\log\Target
     /**
      * @inheritdoc
      */
-    public function setLevels($levels)
+    public function setLevels($levels): void
     {
         if (is_array($levels)) {
             foreach ($levels as $key => $level) {
@@ -228,6 +169,97 @@ class SentryTarget extends \yii\log\Target
     // =========================================================================
 
     /**
+     * Returns client options to be passed when Sentry initializes.
+     *
+     * @return array
+     */
+    protected function getOptions(): array
+    {
+        $options = [
+            'dsn'                  => $this->dsn ?: null,
+            'release'              => $this->release ?: null,
+            'environment'          => $this->environment ?: CRAFT_ENVIRONMENT,
+            'http_proxy'           => Craft::$app->getConfig()->getGeneral()->httpProxy,
+            'context_lines'        => 10,
+            'send_default_pii'     => !$this->anonymous,
+            'default_integrations' => true,
+
+            'integrations' => function (array $integrations): array {
+                return self::getIntegrations($integrations);
+            },
+        ];
+
+        unset($this->options['dsn']);
+        unset($this->options['release']);
+        unset($this->options['environment']);
+        unset($this->options['send_default_pii']);
+        unset($this->options['default_integrations']);
+        unset($this->options['integrations']);
+
+        return array_merge($options, $this->options);
+    }
+
+    /**
+     * Returns extra context to be sent with each Sentry event.
+     *
+     * @param $request
+     * @return array
+     */
+    protected function getExtras($request): array
+    {
+        /** @var \craft\console\Request|\craft\web\Request $request */
+
+        $extras = [
+            'App Name'      => Craft::$app->getSystemName(),
+            'Craft Edition' => App::editionName(Craft::$app->getEdition()),
+            'Craft Schema'  => Craft::$app->getInstalledSchemaVersion(),
+            'Craft Version' => Craft::$app->getVersion(),
+            'Dev Mode'      => Craft::$app->getConfig()->getGeneral()->devMode ? 'Yes' : 'No',
+            'Environment'   => CRAFT_ENVIRONMENT,
+            'PHP Version'   => App::phpVersion(),
+            'Request Type'  => $request->getIsConsoleRequest() ? 'Console' : ($request->getIsAjax() ? 'Ajax' : 'Web'),
+            'Twig Version'  => TwigEnvironment::VERSION,
+            'Yii Version'   => Yii::getVersion(),
+        ];
+
+        if ($request->getIsConsoleRequest()) {
+            try {
+                $scriptFile = $request->getScriptFile() . ' ';
+            } catch(\Throwable $e) {
+                $scriptFile = '';
+            }
+
+            $extras['Request Script'] = $scriptFile . implode(' ', $request->getParams());
+        } else {
+            $extras['Request Route'] = $request->getUrl();
+        }
+
+        try {
+            $db = Craft::$app->getDb();
+            $dbVersion = App::normalizeVersion($db->getSchema()->getServerVersion());
+
+            if ($db->getIsMysql()) {
+                $extras['Database Driver'] = 'MySQL ' . $dbVersion;
+            } else {
+                $extras['Database Driver'] = 'PostgreSQL ' . $dbVersion;
+            }
+        } catch (\Throwable $e) {}
+
+        try {
+            $imageService = Craft::$app->getImages();
+            $imageVersion = $imageService->getVersion();
+
+            if ($imageService->getIsGd()) {
+                $extras['Image Driver'] = 'GD ' . $imageVersion;
+            } else {
+                $extras['Image Driver'] = 'Imagick ' . $imageVersion;
+            }
+        } catch (\Throwable $e) {}
+
+        return $extras;
+    }
+
+    /**
      * Returns Sentry Integrations to be loaded.
      *
      * @param Sentry\Integration\IntegrationInterface[] $integrations
@@ -237,6 +269,7 @@ class SentryTarget extends \yii\log\Target
     {
         $integrations[] = new CraftIntegration();
 
+        // Do not override Craft error and exception handlers
         return array_filter($integrations, static function (\Sentry\Integration\IntegrationInterface $integration): bool {
             return !$integration instanceof \Sentry\Integration\AbstractErrorListenerIntegration;
         });
@@ -248,7 +281,7 @@ class SentryTarget extends \yii\log\Target
      * @param int $level
      * @return Severity
      */
-    protected function getSeverityLevel(int $level)
+    protected function getSeverityLevel(int $level): Severity
     {
         switch($level) {
             case Logger::LEVEL_PROFILE_END:
