@@ -7,6 +7,7 @@ use diginov\sentry\models\SettingsModel;
 
 use Craft;
 use craft\base\Model;
+use craft\helpers\App;
 use craft\helpers\ArrayHelper;
 
 class Plugin extends \craft\base\Plugin
@@ -61,9 +62,9 @@ class Plugin extends \craft\base\Plugin
 
             if ($settings && $settings->validate()) {
                 $target = ArrayHelper::merge($settings->toArray(), ['class' => SentryTarget::class]);
-                $target['dsn'] = Craft::parseEnv($target['dsn']);
-                $target['release'] = Craft::parseEnv($target['release']);
-                $target['environment'] = Craft::parseEnv($target['environment']);
+                $target['dsn'] = App::parseEnv($target['dsn']);
+                $target['release'] = App::parseEnv($target['release']);
+                $target['environment'] = App::parseEnv($target['environment']);
                 $dispatcher->targets['__craftSentryTarget'] = Craft::createObject($target);
             }
         }

@@ -3,6 +3,8 @@
 namespace diginov\sentry\models;
 
 use Craft;
+use craft\helpers\App;
+
 use Sentry\Dsn;
 
 class SettingsModel extends \craft\base\Model
@@ -110,7 +112,7 @@ class SettingsModel extends \craft\base\Model
                 'dsn',
                 function($attribute, $params, $validator) {
                     try {
-                        Dsn::createFromString(Craft::parseEnv($this->$attribute));
+                        Dsn::createFromString(App::parseEnv($this->$attribute));
                     } catch (\Throwable $e) {
                         $this->addError($attribute, Craft::t('yii', '{attribute} is invalid.', [
                             'attribute' => Craft::t('sentry-logger', 'Client Key (DSN)'),
