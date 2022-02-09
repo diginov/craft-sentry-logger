@@ -1,5 +1,20 @@
 # Release Notes for Sentry Logger
 
+## 1.2.0 - 2022-02-09
+
+### Added
+- Added image driver type and version in additional data pushed to Sentry.
+- Added the ability to customize options passed to the Sentry SDK when it initializes.
+- Added default Sentry [`http_proxy`](https://craftcms.com/docs/3.x/config/config-settings.html#httpproxy) option value to equal the Craft [`httpProxy`](https://docs.sentry.io/platforms/php/configuration/options/#http-proxy) general config setting.
+
+### Changed
+- Updated and cleaned documentation.
+- Simplified PHP requirement in Composer.
+- Refactoring code to make the Craft 4 upgrade easier.
+
+### Fixed
+- Fixed excluded HTTP status codes validation.
+
 ## 1.1.8 - 2022-01-17
 
 ### Changed
@@ -98,7 +113,7 @@
 - Updated documentation about basic and advanced configuration files.
 
 ### Fixed
-- Fixed request type detection for console commands. 
+- Fixed request type detection for console commands.
 
 ### Removed
 - Removed request method and mimetype from Sentry additional data.
@@ -109,12 +124,12 @@
 - Added missing translation in the settings model.
 
 ### Fixed
-- Fixed Twig template path and line number added to stack frames when the exception occurs in a compiled template. 
+- Fixed Twig template path and line number added to stack frames when the exception occurs in a compiled template.
 
 ## 1.0.5 - 2020-10-31
 
 ### Added
-- Added request method, ajax and mimetype to Sentry additional data. 
+- Added request method, ajax and mimetype to Sentry additional data.
 
 ### Changed
 - Changed required Craft CMS version.
