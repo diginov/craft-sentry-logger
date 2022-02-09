@@ -1,5 +1,13 @@
 # Release Notes for Sentry Logger
 
+## Unreleased
+
+### Changed
+- Updated and cleaned documentation.
+- Updated Composer requirements for Craft 4.
+- Updated PHP typings requirements for Craft 4 compatibility.
+- Updated deprecated use of `Craft::parseEnv()` with `App::parseEnv()`.
+
 ## 1.2.0 - 2022-02-09
 
 ### Added
