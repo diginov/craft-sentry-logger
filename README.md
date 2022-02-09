@@ -34,7 +34,7 @@ Pushes Craft CMS logs to [Sentry](https://sentry.io/) through a real Yii 2 log t
 
 ## Requirements
 
-This plugin requires PHP 7.2 or later and Craft CMS 3.5 or later.
+This plugin requires Craft CMS 4.0 or later.
 
 ## Installation
 
@@ -90,8 +90,6 @@ Please note that this method override the basic configuration method.
 
 To activate the advanced configuration, extend the `log` component in your existing `config/app.php` config file:
 
-### Craft 3.6 or later
-
 ```php
 <?php
 
@@ -122,41 +120,6 @@ return [
                 },
             ],
         ],
-    ],
-
-];
-```
-
-### Craft 3.5 only
-
-```php
-<?php
-
-use craft\helpers\App;
-
-return [
-
-    'components' => [
-        'log' => function() {
-            $config = App::logConfig();
-
-            if (class_exists('diginov\\sentry\\log\\SentryTarget')) {
-                $config['targets'][] = [
-                    'class' => 'diginov\\sentry\\log\\SentryTarget',
-                    'enabled' => CRAFT_ENVIRONMENT !== 'dev',
-                    'anonymous' => false,
-                    'dsn' => App::env('SENTRY_DSN'),
-                    'release' => App::env('SENTRY_RELEASE'),
-                    'environment' => App::env('SENTRY_ENVIRONMENT'),
-                    'levels' => ['error', 'warning'],
-                    'options' => [],
-                    'exceptCodes' => [403, 404],
-                    'exceptPatterns' => [],
-                ];
-            }
-
-            return Craft::createObject($config);
-        },
     ],
 
 ];
