@@ -86,7 +86,7 @@ class SentryTarget extends \yii\log\Target
         ];
 
         foreach ($this->exceptCodes as $exceptCode) {
-            if (preg_match('/[0-9]{3}/', $exceptCode)) {
+            if (preg_match('/^[1-5][0-9]{2}$/', $exceptCode)) {
                 $except[] = HttpException::class . ':' . $exceptCode;
             }
         }
