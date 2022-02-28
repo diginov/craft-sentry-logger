@@ -1,9 +1,9 @@
 <?php
 
-namespace diginov\sentry;
+namespace diginov\sentrylogger;
 
-use diginov\sentry\log\SentryTarget;
-use diginov\sentry\models\SettingsModel;
+use diginov\sentrylogger\log\SentryTarget;
+use diginov\sentrylogger\models\SettingsModel;
 
 use Craft;
 use craft\base\Model;
@@ -65,7 +65,7 @@ class Plugin extends \craft\base\Plugin
                 $target['dsn'] = App::parseEnv($target['dsn']);
                 $target['release'] = App::parseEnv($target['release']);
                 $target['environment'] = App::parseEnv($target['environment']);
-                $dispatcher->targets['__craftSentryTarget'] = Craft::createObject($target);
+                $dispatcher->targets['__sentry__'] = Craft::createObject($target);
             }
         }
     }

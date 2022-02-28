@@ -1,6 +1,6 @@
 <?php
 
-namespace diginov\sentry\models;
+namespace diginov\sentrylogger\models;
 
 use Craft;
 use craft\helpers\App;

@@ -1,6 +1,6 @@
 <?php
 
-namespace diginov\sentry\controllers;
+namespace diginov\sentrylogger\controllers;
 
 use Craft;
 use yii\web\Response;

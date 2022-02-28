@@ -32,7 +32,7 @@
     },
     "autoload": {
         "psr-4": {
-            "diginov\\sentry\\": "src/"
+            "diginov\\sentrylogger\\": "src/"
         }
     },
     "config": {

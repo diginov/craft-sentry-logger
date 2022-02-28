@@ -2,11 +2,14 @@
 
 ## Unreleased
 
+> {warning} Read through the [documentation](https://github.com/diginov/craft-sentry-logger/blob/main/README.md) if you are using the advanced configuration method before updating.
+
 ### Changed
 - Updated and cleaned documentation.
 - Updated Composer requirements for Craft 4 compatibility.
 - Updated PHP typings requirements for Craft 4 compatibility.
 - Updated deprecated use of `Craft::parseEnv()` with `App::parseEnv()`.
+- Updated PHP namespace from `diginov\sentry` to `diginov\sentrylogger`.
 
 ## 1.2.0 - 2022-02-09
 

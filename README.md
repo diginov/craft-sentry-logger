@@ -94,19 +94,20 @@ To activate the advanced configuration, extend the `log` component in your exist
 <?php
 
 use craft\helpers\App;
+use diginov\sentrylogger\log\SentryTarget;
 
 return [
 
     'components' => [
         'log' => [
             'targets' => [
-                '__craftSentryTarget' => function() {
-                    if (!class_exists('diginov\\sentry\\log\\SentryTarget')) {
+                '__sentry__' => function() {
+                    if (!class_exists(SentryTarget::class)) {
                         return null;
                     }
 
                     return Craft::createObject([
-                        'class' => 'diginov\\sentry\\log\\SentryTarget',
+                        'class' => SentryTarget::class,
                         'enabled' => CRAFT_ENVIRONMENT !== 'dev',
                         'anonymous' => false,
                         'dsn' => App::env('SENTRY_DSN'),
