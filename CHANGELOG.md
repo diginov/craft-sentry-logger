@@ -4,7 +4,7 @@
 
 ### Changed
 - Updated and cleaned documentation.
-- Updated Composer requirements for Craft 4.
+- Updated Composer requirements for Craft 4 compatibility.
 - Updated PHP typings requirements for Craft 4 compatibility.
 - Updated deprecated use of `Craft::parseEnv()` with `App::parseEnv()`.
 
