@@ -16,7 +16,7 @@
 ### Added
 - Added image driver type and version in additional data pushed to Sentry.
 - Added the ability to customize options passed to the Sentry SDK when it initializes.
-- Added default Sentry [`http_proxy`](https://craftcms.com/docs/3.x/config/config-settings.html#httpproxy) option value to equal the Craft [`httpProxy`](https://docs.sentry.io/platforms/php/configuration/options/#http-proxy) general config setting.
+- Added Sentry [`http_proxy`](https://craftcms.com/docs/3.x/config/config-settings.html#httpproxy) option value that default to Craft [`httpProxy`](https://docs.sentry.io/platforms/php/configuration/options/#http-proxy) general config setting.
 
 ### Changed
 - Updated and cleaned documentation.
@@ -88,7 +88,7 @@
 
 ## 1.1.0 - 2021-01-27
 
-> {warning} Read through the [documentation](https://github.com/diginov/craft-sentry-logger/blob/master/README.md) if you are using the advanced configuration method before updating.
+> {warning} Read through the [documentation](https://github.com/diginov/craft-sentry-logger/blob/main/README.md) if you are using the advanced configuration method before updating.
 
 ### Changed
 - Updated the way the log target is added to the log dispatcher in Craft 3.6.
