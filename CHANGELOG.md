@@ -1,6 +1,6 @@
 # Release Notes for Sentry Logger
 
-## Unreleased
+## 4.0.0-beta.1 - 2022-03-02
 
 > {warning} Read through the [documentation](https://github.com/diginov/craft-sentry-logger/blob/main/README.md) if you are using the advanced configuration method before updating.
 
