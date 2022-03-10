@@ -1,8 +1,13 @@
 # Release Notes for Sentry Logger
 
-## 4.0.0-beta.1 - 2022-03-02
+## 4.0.0-beta.2 - 2022-03-10
 
 > {warning} Read through the [documentation](https://github.com/diginov/craft-sentry-logger/blob/main/README.md) if you are using the advanced configuration method before updating.
+
+### Changed
+- Updated Composer requirements for Craft 4 compatibility.
+
+## 4.0.0-beta.1 - 2022-03-02
 
 ### Changed
 - Updated and cleaned documentation.
