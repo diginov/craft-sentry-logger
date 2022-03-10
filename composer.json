@@ -27,7 +27,7 @@
         "rss": "https://github.com/diginov/craft-sentry-logger/releases.atom"
     },
     "require": {
-        "craftcms/cms": "^4.0.0-alpha",
+        "craftcms/cms": "^4.0.0-beta",
         "sentry/sdk": "^3.1.1"
     },
     "autoload": {
