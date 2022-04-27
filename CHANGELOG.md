@@ -1,11 +1,17 @@
 # Release Notes for Sentry Logger
 
+## 1.2.1 - 2022-04-27
+
+### Fixed
+- Fixed the Craft version required to use the [`httpProxy`](https://craftcms.com/docs/3.x/config/config-settings.html#httpproxy) general config setting.
+- Fixed documentation link in GitHub issue template.
+- 
 ## 1.2.0 - 2022-02-09
 
 ### Added
 - Added image driver type and version in additional data pushed to Sentry.
 - Added the ability to customize options passed to the Sentry SDK when it initializes.
-- Added default Sentry [`http_proxy`](https://craftcms.com/docs/3.x/config/config-settings.html#httpproxy) option value to equal the Craft [`httpProxy`](https://docs.sentry.io/platforms/php/configuration/options/#http-proxy) general config setting.
+- Added default Sentry [`http_proxy`](https://docs.sentry.io/platforms/php/configuration/options/#http-proxy) option value to equal the Craft [`httpProxy`](https://craftcms.com/docs/3.x/config/config-settings.html#httpproxy) general config setting.
 
 ### Changed
 - Updated and cleaned documentation.
