@@ -5,7 +5,7 @@
 ### Fixed
 - Fixed the Craft version required to use the [`httpProxy`](https://craftcms.com/docs/3.x/config/config-settings.html#httpproxy) general config setting.
 - Fixed documentation link in GitHub issue template.
-- 
+
 ## 1.2.0 - 2022-02-09
 
 ### Added
