@@ -179,7 +179,6 @@ class SentryTarget extends \yii\log\Target
             'dsn'                  => $this->dsn ?: null,
             'release'              => $this->release ?: null,
             'environment'          => $this->environment ?: CRAFT_ENVIRONMENT,
-            'http_proxy'           => Craft::$app->getConfig()->getGeneral()->httpProxy,
             'context_lines'        => 10,
             'send_default_pii'     => !$this->anonymous,
             'default_integrations' => true,
@@ -188,6 +187,10 @@ class SentryTarget extends \yii\log\Target
                 return self::getIntegrations($integrations);
             },
         ];
+
+        if (version_compare(Craft::$app->getVersion(), '3.7', '>=')) {
+            $options['http_proxy'] = Craft::$app->getConfig()->getGeneral()->httpProxy;
+        }
 
         unset($this->options['dsn']);
         unset($this->options['release']);
