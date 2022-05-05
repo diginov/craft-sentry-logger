@@ -1,5 +1,10 @@
 # Release Notes for Sentry Logger
 
+## 1.2.2 - 2022-05-04
+
+### Fixed
+- Fixed how we get the current Craft environment variable.
+
 ## 1.2.1 - 2022-04-27
 
 ### Fixed
