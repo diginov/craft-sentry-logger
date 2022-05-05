@@ -178,8 +178,7 @@ class SentryTarget extends \yii\log\Target
         $options = [
             'dsn'                  => $this->dsn ?: null,
             'release'              => $this->release ?: null,
-            'environment'          => $this->environment ?: CRAFT_ENVIRONMENT,
-            'http_proxy'           => Craft::$app->getConfig()->getGeneral()->httpProxy,
+            'environment'          => $this->environment ?: (App::env('CRAFT_ENVIRONMENT') ?: null),
             'context_lines'        => 10,
             'send_default_pii'     => !$this->anonymous,
             'default_integrations' => true,
@@ -188,6 +187,10 @@ class SentryTarget extends \yii\log\Target
                 return self::getIntegrations($integrations);
             },
         ];
+
+        if (version_compare(Craft::$app->getVersion(), '3.7', '>=')) {
+            $options['http_proxy'] = Craft::$app->getConfig()->getGeneral()->httpProxy;
+        }
 
         unset($this->options['dsn']);
         unset($this->options['release']);
@@ -215,7 +218,7 @@ class SentryTarget extends \yii\log\Target
             'Craft Schema'  => Craft::$app->getInstalledSchemaVersion(),
             'Craft Version' => Craft::$app->getVersion(),
             'Dev Mode'      => Craft::$app->getConfig()->getGeneral()->devMode ? 'Yes' : 'No',
-            'Environment'   => CRAFT_ENVIRONMENT,
+            'Environment'   => App::env('CRAFT_ENVIRONMENT') ?: null,
             'PHP Version'   => App::phpVersion(),
             'Request Type'  => $request->getIsConsoleRequest() ? 'Console' : ($request->getIsAjax() ? 'Ajax' : 'Web'),
             'Twig Version'  => TwigEnvironment::VERSION,
