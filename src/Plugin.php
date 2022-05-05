@@ -65,7 +65,7 @@ class Plugin extends \craft\base\Plugin
                 $target['dsn'] = App::parseEnv($target['dsn']);
                 $target['release'] = App::parseEnv($target['release']);
                 $target['environment'] = App::parseEnv($target['environment']);
-                $dispatcher->targets['__sentry__'] = Craft::createObject($target);
+                $dispatcher->targets['sentry'] = Craft::createObject($target);
             }
         }
     }

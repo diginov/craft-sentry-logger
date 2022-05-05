@@ -101,7 +101,7 @@ return [
     'components' => [
         'log' => [
             'targets' => [
-                '__sentry__' => function() {
+                'sentry' => function() {
                     if (!class_exists(SentryTarget::class)) {
                         return null;
                     }
