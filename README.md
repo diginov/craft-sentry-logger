@@ -109,7 +109,7 @@ return [
 
                     return Craft::createObject([
                         'class' => 'diginov\\sentry\\log\\SentryTarget',
-                        'enabled' => CRAFT_ENVIRONMENT !== 'dev',
+                        'enabled' => App::env('CRAFT_ENVIRONMENT') !== 'dev',
                         'anonymous' => false,
                         'dsn' => App::env('SENTRY_DSN'),
                         'release' => App::env('SENTRY_RELEASE'),
@@ -143,7 +143,7 @@ return [
             if (class_exists('diginov\\sentry\\log\\SentryTarget')) {
                 $config['targets'][] = [
                     'class' => 'diginov\\sentry\\log\\SentryTarget',
-                    'enabled' => CRAFT_ENVIRONMENT !== 'dev',
+                    'enabled' => App::env('CRAFT_ENVIRONMENT') !== 'dev',
                     'anonymous' => false,
                     'dsn' => App::env('SENTRY_DSN'),
                     'release' => App::env('SENTRY_RELEASE'),
