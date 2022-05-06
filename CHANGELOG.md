@@ -1,5 +1,10 @@
 # Release Notes for Sentry Logger
 
+## 4.0.1 - 2022-05-06
+
+### Changed
+- Updated advanced configuration examples to use `App::env('CRAFT_ENVIRONMENT')` instead of the constant directly.
+
 ## 4.0.0 - 2022-05-04
 
 > {warning} Read through the [documentation](https://github.com/diginov/craft-sentry-logger/blob/main/README.md) if you are using the advanced configuration method before updating.
