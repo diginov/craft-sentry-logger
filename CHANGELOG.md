@@ -1,5 +1,10 @@
 # Release Notes for Sentry Logger
 
+## 1.2.3 - 2022-05-06
+
+### Changed
+- Updated advanced configuration examples to use `App::env('CRAFT_ENVIRONMENT')` instead of the constant directly.
+
 ## 1.2.2 - 2022-05-04
 
 ### Fixed
