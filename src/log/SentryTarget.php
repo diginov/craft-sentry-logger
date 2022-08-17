@@ -190,7 +190,12 @@ class SentryTarget extends \yii\log\Target
             'default_integrations' => true,
 
             'integrations' => function (array $integrations): array {
-                return self::getIntegrations($integrations);
+                $integrations[] = new CraftIntegration();
+
+                // Do not override Craft error and exception handlers
+                return array_filter($integrations, static function (\Sentry\Integration\IntegrationInterface $integration): bool {
+                    return !$integration instanceof \Sentry\Integration\AbstractErrorListenerIntegration;
+                });
             },
 
             'before_send' => function (Event $event): Event {
@@ -251,7 +256,7 @@ class SentryTarget extends \yii\log\Target
         $extras = [
             'App Name'      => Craft::$app->getSystemName(),
             'Craft Edition' => App::editionName(Craft::$app->getEdition()),
-            'Craft Schema'  => Craft::$app->getInstalledSchemaVersion(),
+            'Craft Schema'  => Craft::$app->schemaVersion,
             'Craft Version' => Craft::$app->getVersion(),
             'Dev Mode'      => Craft::$app->getConfig()->getGeneral()->devMode ? 'Yes' : 'No',
             'Environment'   => App::env('CRAFT_ENVIRONMENT') ?: null,
@@ -296,22 +301,6 @@ class SentryTarget extends \yii\log\Target
         } catch (\Throwable $e) {}
 
         return $extras;
-    }
-
-    /**
-     * Returns Sentry Integrations to be loaded.
-     *
-     * @param Sentry\Integration\IntegrationInterface[] $integrations
-     * @return Sentry\Integration\IntegrationInterface[]
-     */
-    protected function getIntegrations(array $integrations): array
-    {
-        $integrations[] = new CraftIntegration();
-
-        // Do not override Craft error and exception handlers
-        return array_filter($integrations, static function (\Sentry\Integration\IntegrationInterface $integration): bool {
-            return !$integration instanceof \Sentry\Integration\AbstractErrorListenerIntegration;
-        });
     }
 
     /**
