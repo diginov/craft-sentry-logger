@@ -6,6 +6,7 @@ use Craft;
 use craft\helpers\App;
 
 use Sentry;
+use Sentry\Event;
 use Sentry\Severity;
 use Sentry\State\Scope;
 
@@ -56,6 +57,11 @@ class SentryTarget extends \yii\log\Target
      * @var array
      */
     public $exceptPatterns = [];
+
+    /**
+     * @var array
+     */
+    public array $userPrivacy = ['id', 'email', 'username', 'ip_address', 'cookies', 'permissions'];
 
     // Public Methods
     // =========================================================================
@@ -125,12 +131,12 @@ class SentryTarget extends \yii\log\Target
 
                 if ($user && !$this->anonymous) {
                     $scope->setUser([
-                        'email'      => $user->email,
-                        'id'         => $user->id,
-                        'ip_address' => $request->getRemoteIP(),
-                        'username'   => $user->username,
-                        'Admin'      => $user->admin ? 'Yes' : 'No',
-                        'Groups'     => $groups ? implode(', ', $groups) : null,
+                        'id'         => in_array('id', $this->userPrivacy) ? $user->id : null,
+                        'email'      => in_array('email', $this->userPrivacy) ? $user->email : null,
+                        'username'   => in_array('username', $this->userPrivacy) ? $user->username : null,
+                        'ip_address' => in_array('ip_address', $this->userPrivacy) ? $request->getRemoteIP() : null,
+                        'Admin'      => in_array('permissions', $this->userPrivacy) ? ($user->admin ? 'Yes' : 'No'): null,
+                        'Groups'     => in_array('permissions', $this->userPrivacy) ? ($groups ? implode(', ', $groups) : null) : null,
                     ]);
                 }
 
@@ -186,6 +192,36 @@ class SentryTarget extends \yii\log\Target
             'integrations' => function (array $integrations): array {
                 return self::getIntegrations($integrations);
             },
+
+            'before_send' => function (Event $event): Event {
+                $user = $event->getUser();
+                $request = $event->getRequest();
+
+                // Prevent cookies from being sent
+                if (!in_array('cookies', $this->userPrivacy)) {
+                    unset($request['cookies']);
+                    unset($request['headers']['Cookie']);
+
+                    if (empty($request['headers'])) {
+                        unset($request['headers']);
+                    }
+                }
+
+                // Prevent ip address from being sent
+                if (!in_array('ip_address', $this->userPrivacy)) {
+                    $user->setIpAddress(null);
+                    unset($request['env']['REMOTE_ADDR']);
+
+                    if (empty($request['env'])) {
+                        unset($request['env']);
+                    }
+                }
+
+                $event->setUser($user);
+                $event->setRequest($request);
+
+                return $event;
+           },
         ];
 
         if (version_compare(Craft::$app->getVersion(), '3.7', '>=')) {
