@@ -1,5 +1,15 @@
 # Release Notes for Sentry Logger
 
+## 1.3.0 - 2022-08-18
+
+### Added
+- Added the `userPrivacy` configuration parameter to specify what sensible data will be sent to Sentry.
+
+### Changed
+- Updated the required version of Sentry SDK.
+- Updated documentation and examples.
+- Refactoring code and cleanup.
+
 ## 1.2.3 - 2022-05-06
 
 ### Changed
