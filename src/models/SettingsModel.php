@@ -57,6 +57,11 @@ class SettingsModel extends \craft\base\Model
      */
     public array $exceptPatterns = [];
 
+    /**
+     * @var array
+     */
+    public array $userPrivacy = ['id', 'email', 'username', 'ip_address', 'cookies', 'permissions'];
+
     // Public Methods
     // =========================================================================
 
@@ -76,7 +81,7 @@ class SettingsModel extends \craft\base\Model
                     return (bool) $value;
                 },
             ],[
-                ['levels', 'exceptCodes', 'exceptPatterns'],
+                ['levels', 'exceptCodes', 'exceptPatterns', 'userPrivacy'],
                 'filter',
                 'filter' => function($value): array {
                     if (isset($value[0]) && count($value) === 1) {
@@ -90,7 +95,7 @@ class SettingsModel extends \craft\base\Model
                     return $value;
                 },
             ],[
-                'levels',
+                ['levels', 'userPrivacy'],
                 'filter',
                 'filter' => function($value): array {
                     $value = array_filter($value);
@@ -119,6 +124,12 @@ class SettingsModel extends \craft\base\Model
                         ]));
                     }
                 }
+            ],[
+                'userPrivacy',
+                'required',
+                'message' => Craft::t('yii', '{attribute} cannot be blank.', [
+                    'attribute' => Craft::t('sentry-logger', 'User privacy settings'),
+                ]),
             ],[
                 'levels',
                 'required',

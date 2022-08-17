@@ -20,7 +20,7 @@
 {{ forms.lightswitchField({
     first: not isAdvancedConfig,
     label: "Enabled" |t(plugin.handle),
-    instructions: "When disabled, the plugin will not send your logs to Sentry." |t(plugin.handle),
+    instructions: "When enabled, the plugin will send your logs to Sentry." |t(plugin.handle),
     id: 'enabled',
     name: 'enabled',
     on: settings.enabled,
@@ -30,12 +30,36 @@
 
 {{ forms.lightswitchField({
     label: "Anonymous" |t(plugin.handle),
-    instructions: "When enabled, the plugin will not send sensitive visitor and user data to Sentry." |t(plugin.handle),
+    instructions: "When enabled, the plugin will not send sensitive user and visitor data to Sentry." |t(plugin.handle),
     id: 'anonymous',
     name: 'anonymous',
     on: settings.anonymous,
     errors: settings.getErrors('anonymous'),
     warning: 'anonymous' in overrides |keys ? configWarning(plugin, 'anonymous'),
+}) }}
+
+{{ forms.hidden({
+    id: 'userPrivacy',
+    name: 'userPrivacy[]',
+}) }}
+
+{{ forms.checkboxSelectField({
+    label: "User privacy settings" |t(plugin.handle),
+    instructions: "Which sensitive data do you want sent to Sentry when the **Anonymous** setting is disabled?" |t(plugin.handle),
+    id: 'userPrivacy',
+    name: 'userPrivacy',
+    options: [
+        { label: "ID" |t(plugin.handle), value: 'id' },
+        { label: "Email" |t(plugin.handle), value: 'email' },
+        { label: "Username" |t(plugin.handle), value: 'username' },
+        { label: "IP Address" |t(plugin.handle), value: 'ip_address' },
+        { label: "Cookies" |t(plugin.handle), value: 'cookies' },
+        { label: "Permissions" |t(plugin.handle), value: 'permissions' },
+    ],
+    values: settings.userPrivacy,
+    required: true,
+    errors: settings.getErrors('userPrivacy'),
+    warning: 'userPrivacy' in overrides |keys ? configWarning(plugin, 'userPrivacy'),
 }) }}
 
 {{ forms.autosuggestField({
