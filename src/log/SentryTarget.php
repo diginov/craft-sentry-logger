@@ -61,7 +61,7 @@ class SentryTarget extends \yii\log\Target
     /**
      * @var array
      */
-    public array $userPrivacy = ['id', 'email', 'username', 'ip_address', 'cookies', 'permissions'];
+    public $userPrivacy = ['id', 'email', 'username', 'ip_address', 'cookies', 'permissions'];
 
     // Public Methods
     // =========================================================================
