@@ -8,7 +8,7 @@ Pushes Craft CMS logs to [Sentry](https://sentry.io/) through a real Yii 2 log t
 
 ## Features
 
-- Updated to the latest Sentry SDK version 3
+- Updated to the latest and official Sentry SDK
 - Native Yii 2 log target that is fully customisable
 - All errors and warnings for each request are sent
 - Plugin settings can be defined in the CP or with a config file
@@ -65,7 +65,6 @@ return [
         'release' => App::env('SENTRY_RELEASE'),
         'environment' => App::env('SENTRY_ENVIRONMENT'),
         'levels' => ['error', 'warning'],
-        'options' => [],
         'exceptCodes' => [403, 404],
         'exceptPatterns' => [],
     ],
@@ -115,7 +114,6 @@ return [
                         'release' => App::env('SENTRY_RELEASE'),
                         'environment' => App::env('SENTRY_ENVIRONMENT'),
                         'levels' => ['error', 'warning'],
-                        'options' => [],
                         'exceptCodes' => [403, 404],
                         'exceptPatterns' => [],
                     ]);
@@ -149,7 +147,6 @@ return [
                     'release' => App::env('SENTRY_RELEASE'),
                     'environment' => App::env('SENTRY_ENVIRONMENT'),
                     'levels' => ['error', 'warning'],
-                    'options' => [],
                     'exceptCodes' => [403, 404],
                     'exceptPatterns' => [],
                 ];
@@ -176,6 +173,12 @@ This required parameter is a boolean that indicates whether this log target is e
 
 This optional parameter is a boolean that indicates, when enabled, that this log target will NOT send sensitive visitors
 and users data to Sentry.
+
+### `userPrivacy`
+
+This optional parameter is an array of sensitive user data that will be sent to Sentry if the `anonymous` parameter is 
+set to `false`. Available values are `id`, `email`, `username`, `ip_address`, `cookies` and `permissions`. Defaults to 
+all sensitive user data.
 
 ### `dsn`
 
@@ -227,9 +230,9 @@ for the `except` parameter to make it easier. Defaults to `403` and `404`, meani
 
 ### `exceptPatterns`
 
-This optional parameter is an array of search patterns (regex) that this log target is NOT interested in. Defaults to
-empty, meaning no uninteresting search patterns. These search patterns are tested against the message of an exception,
-error or warning. This is useful for filtering out messages sent without an exception code such as those sent by the
+This optional parameter is an array of search patterns that this log target is NOT interested in. Defaults to empty, 
+meaning no uninteresting search patterns. These search patterns are matched on the message of an exception, error 
+or warning. This is useful for filtering out messages sent without an exception code such as those sent by the
 `Craft::error()` and `Craft::warning()` methods.
 
 ## Credits
