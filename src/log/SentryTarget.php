@@ -214,7 +214,10 @@ class SentryTarget extends \yii\log\Target
 
                 // Prevent ip address from being sent
                 if (!in_array('ip_address', $this->userPrivacy)) {
-                    $user->setIpAddress(null);
+                    if ($user) {
+                        $user->setIpAddress(null);
+                    }
+
                     unset($request['env']['REMOTE_ADDR']);
 
                     if (empty($request['env'])) {
