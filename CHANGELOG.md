@@ -1,6 +1,11 @@
 # Release Notes for Sentry Logger
 
-## 1.3.0 - 2022-08-18
+## 1.3.1 - 2022-08-19
+
+### Fixed
+- Fixed IP address filtering in `before_send` callback that prevent console logs from being sent.
+
+## 1.3.0 - 2022-08-17
 
 ### Added
 - Added the `userPrivacy` configuration parameter to specify what sensible data will be sent to Sentry.
