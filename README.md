@@ -230,10 +230,10 @@ for the `except` parameter to make it easier. Defaults to `403` and `404`, meani
 
 ### `exceptPatterns`
 
-This optional parameter is an array of search patterns that this log target is NOT interested in. Defaults to empty, 
-meaning no uninteresting search patterns. These search patterns are matched on the message of an exception, error 
-or warning. This is useful for filtering out messages sent without an exception code such as those sent by the
-`Craft::error()` and `Craft::warning()` methods.
+This optional parameter is an array of text search patterns that this log target is NOT interested in. Defaults to 
+empty, meaning no uninteresting text search patterns. These text search patterns are matched on the text of an 
+exception message, error or warning. This is useful for filtering out text messages sent without an exception code such 
+as those sent by the `Craft::error()` and `Craft::warning()` methods.
 
 ## Credits
 
