@@ -1,5 +1,10 @@
 # Release Notes for Sentry Logger
 
+## 1.3.3 - 2023-06-08
+
+### Changed
+- Updated the required version of Sentry SDK.
+
 ## 1.3.2 - 2023-04-09
 
 ### Changed
