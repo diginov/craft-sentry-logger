@@ -34,7 +34,7 @@ Pushes Craft CMS logs to [Sentry](https://sentry.io/) through a real Yii 2 log t
 
 ## Requirements
 
-This plugin requires PHP 7.2 or later and Craft CMS 3.5 or later.
+This plugin requires PHP 8.0.2 or later and Craft CMS 4.0 or later.
 
 ## Installation
 
