@@ -31,10 +31,10 @@ return [
     "User privacy settings" => "Confidentialité de l'utilisateur",
     "Username" => "Nom d'utilisateur",
     "Warning" => "Avertissement",
+    "What logging levels do you want to send to Sentry?" => "Quels niveaux de journalisation souhaitez-vous envoyer à Sentry ?",
+    "What sensitive data will be sent to Sentry when the **Anonymous** setting is disabled?" => "Quelles données sensibles seront envoyées à Sentry lorsque le paramètre **Anonyme** est désactivé ?",
     "When enabled, the plugin will not send sensitive user and visitor data to Sentry." => "Lorsque activé, le plugin n'enverra pas les données sensibles des utilisateurs et des visiteurs à Sentry.",
     "When enabled, the plugin will send your logs to Sentry." => "Lorsque activé, le plugin enverra vos journaux à Sentry.",
-    "Which log levels do you want to be sent to Sentry?" => "Quels niveaux de journalisation souhaitez-vous envoyer à Sentry ?",
-    "Which sensitive data do you want sent to Sentry when the **Anonymous** setting is disabled?" => "Quelles données sensibles seront envoyées à Sentry lorsque le paramètre **Anonyme** est désactivé ?",
     "You are using the **advanced configuration** method in your **app.php** config file." => "Vous utilisez la méthode de **configuration avancée** dans votre fichier de configuration **app.php**.",
 
 ];
