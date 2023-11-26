@@ -45,7 +45,7 @@
 
 {{ forms.checkboxSelectField({
     label: "User privacy settings" |t(plugin.handle),
-    instructions: "Which sensitive data do you want sent to Sentry when the **Anonymous** setting is disabled?" |t(plugin.handle),
+    instructions: "What sensitive data will be sent to Sentry when the **Anonymous** setting is disabled?" |t(plugin.handle),
     id: 'userPrivacy',
     name: 'userPrivacy',
     options: [
@@ -103,7 +103,7 @@
 
 {{ forms.checkboxSelectField({
     label: "Included log levels" |t(plugin.handle),
-    instructions: "Which log levels do you want to be sent to Sentry?" |t(plugin.handle),
+    instructions: "What logging levels do you want to send to Sentry?" |t(plugin.handle),
     id: 'levels',
     name: 'levels',
     options: [
