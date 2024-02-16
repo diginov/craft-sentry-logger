@@ -1,5 +1,13 @@
 # Release Notes for Sentry Logger
 
+## 1.3.5 - 2024-02-16
+
+### Changed
+- Updated the required version of Sentry SDK.
+
+### Fixed
+- Fixed an error when `userPrivacy` configuration parameter is empty.
+
 ## 1.3.4 - 2023-11-26
 
 ### Changed
