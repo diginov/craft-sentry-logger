@@ -129,7 +129,7 @@ class SentryTarget extends \yii\log\Target
                     $scope->setTag('category', $category);
                 }
 
-                if ($user && !$this->anonymous) {
+                if ($user && !$this->anonymous && !empty($this->userPrivacy)) {
                     $scope->setUser([
                         'id'         => in_array('id', $this->userPrivacy) ? $user->id : null,
                         'email'      => in_array('email', $this->userPrivacy) ? $user->email : null,
