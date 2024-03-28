@@ -283,13 +283,9 @@ class SentryTarget extends \yii\log\Target
 
         try {
             $db = Craft::$app->getDb();
+            $dbLabel = $db->getDriverLabel();
             $dbVersion = App::normalizeVersion($db->getSchema()->getServerVersion());
-
-            if ($db->getIsMysql()) {
-                $extras['Database Driver'] = 'MySQL ' . $dbVersion;
-            } else {
-                $extras['Database Driver'] = 'PostgreSQL ' . $dbVersion;
-            }
+            $extras['Database Driver'] = $dbLabel . ' ' . $dbVersion;
         } catch (\Throwable $e) {}
 
         try {
