@@ -258,7 +258,7 @@ class SentryTarget extends \yii\log\Target
 
         $extras = [
             'App Name'      => Craft::$app->getSystemName(),
-            'Craft Edition' => App::editionName(Craft::$app->getEdition()),
+            'Craft Edition' => Craft::$app->edition->name,
             'Craft Schema'  => Craft::$app->schemaVersion,
             'Craft Version' => Craft::$app->getVersion(),
             'Dev Mode'      => Craft::$app->getConfig()->getGeneral()->devMode ? 'Yes' : 'No',
