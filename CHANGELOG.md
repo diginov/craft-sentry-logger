@@ -1,5 +1,10 @@
 # Release Notes for Sentry Logger
 
+## 5.0.1 - 2024-04-19
+
+### Changed
+- Updated the required version of Sentry SDK.
+
 ## 5.0.0 - 2024-03-28
 
 ### Changed
