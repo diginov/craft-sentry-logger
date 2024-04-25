@@ -183,8 +183,8 @@ class SentryTarget extends \yii\log\Target
     {
         $options = [
             'dsn'                  => $this->dsn ?: null,
-            'release'              => $this->release ?: null,
-            'environment'          => $this->environment ?: (App::env('CRAFT_ENVIRONMENT') ?: null),
+            'release'              => $this->release ?? App::env('CRAFT_CLOUD_BUILD_ID'),
+            'environment'          => $this->environment ?? App::env('CRAFT_ENVIRONMENT'),
             'context_lines'        => 10,
             'send_default_pii'     => !$this->anonymous,
             'default_integrations' => true,
@@ -257,16 +257,19 @@ class SentryTarget extends \yii\log\Target
         /** @var \craft\console\Request|\craft\web\Request $request */
 
         $extras = [
-            'App Name'      => Craft::$app->getSystemName(),
-            'Craft Edition' => Craft::$app->edition->name,
-            'Craft Schema'  => Craft::$app->schemaVersion,
-            'Craft Version' => Craft::$app->getVersion(),
-            'Dev Mode'      => Craft::$app->getConfig()->getGeneral()->devMode ? 'Yes' : 'No',
-            'Environment'   => App::env('CRAFT_ENVIRONMENT') ?: null,
-            'PHP Version'   => App::phpVersion(),
-            'Request Type'  => $request->getIsConsoleRequest() ? 'Console' : ($request->getIsAjax() ? 'Ajax' : 'Web'),
-            'Twig Version'  => TwigEnvironment::VERSION,
-            'Yii Version'   => Yii::getVersion(),
+            'App Name'                   => Craft::$app->getSystemName(),
+            'Craft Edition'              => Craft::$app->edition->name,
+            'Craft Schema'               => Craft::$app->schemaVersion,
+            'Craft Version'              => Craft::$app->getVersion(),
+            'Dev Mode'                   => Craft::$app->getConfig()->getGeneral()->devMode ? 'Yes' : 'No',
+            'Environment'                => App::env('CRAFT_ENVIRONMENT'),
+            'PHP Version'                => App::phpVersion(),
+            'Request Type'               => $request->getIsConsoleRequest() ? 'Console' : ($request->getIsAjax() ? 'Ajax' : 'Web'),
+            'Twig Version'               => TwigEnvironment::VERSION,
+            'Yii Version'                => Yii::getVersion(),
+            'Craft Cloud Project ID'     => App::env('CRAFT_CLOUD_PROJECT_ID'),
+            'Craft Cloud Environment ID' => App::env('CRAFT_CLOUD_ENVIRONMENT_ID'),
+            'Craft Cloud Build ID'       => App::env('CRAFT_CLOUD_BUILD_ID'),
         ];
 
         if ($request->getIsConsoleRequest()) {
@@ -299,7 +302,7 @@ class SentryTarget extends \yii\log\Target
             }
         } catch (\Throwable $e) {}
 
-        return $extras;
+        return array_filter($extras);
     }
 
     /**
