@@ -28,7 +28,7 @@
     },
     "require": {
         "craftcms/cms": "^5.0.0",
-        "sentry/sentry": "^4.7.0"
+        "sentry/sentry": "^4.10.0"
     },
     "autoload": {
         "psr-4": {
