@@ -134,7 +134,7 @@ class SentryTarget extends \yii\log\Target
                         'id'         => in_array('id', $this->userPrivacy) ? $user->id : null,
                         'email'      => in_array('email', $this->userPrivacy) ? $user->email : null,
                         'username'   => in_array('username', $this->userPrivacy) ? $user->username : null,
-                        'ip_address' => in_array('ip_address', $this->userPrivacy) ? $request->getRemoteIP() : null,
+                        'ip_address' => in_array('ip_address', $this->userPrivacy) ? $request->getUserIP() : null,
                         'Admin'      => in_array('permissions', $this->userPrivacy) ? ($user->admin ? 'Yes' : 'No'): null,
                         'Groups'     => in_array('permissions', $this->userPrivacy) ? ($groups ? implode(', ', $groups) : null) : null,
                     ]);
@@ -143,6 +143,16 @@ class SentryTarget extends \yii\log\Target
                 $scope->setExtras($this->getExtras($request));
 
                 if ($message instanceof \Throwable) {
+                    $previous = $message->getPrevious();
+                    if ($previous) {
+                        $scope->setExtra('Previous Exception', [
+                            'message' => $previous->getMessage(),
+                            'file' => $previous->getFile(),
+                            'line' => $previous->getLine(),
+                            'trace' => $previous->getTraceAsString(),
+                        ]);
+                    }
+
                     Sentry\captureException($message);
                 } else {
                     if (!is_string($message)) {

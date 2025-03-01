@@ -1,5 +1,13 @@
 # Release Notes for Sentry Logger
 
+## 5.0.2 - 2025-02-26
+
+### Added
+- Also log previous exception to extras, if any.
+
+### Fixed
+- Get correct user ip address, fixes issues with proxy servers.
+
 ## 5.0.1 - 2024-04-19
 
 ### Changed
