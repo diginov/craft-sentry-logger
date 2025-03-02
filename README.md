@@ -9,7 +9,7 @@ Pushes Craft CMS logs to [Sentry](https://sentry.io/) through a real Yii 2 log t
 ## Features
 
 - Updated to the latest and official Sentry SDK
-- Native Yii 2 log target that is fully customisable
+- Native Yii 2 log target that is fully customizable
 - All errors and warnings for each request are sent
 - Plugin settings can be defined in the CP or with a config file
 - Options passed when Sentry SDK initializes can be customized
