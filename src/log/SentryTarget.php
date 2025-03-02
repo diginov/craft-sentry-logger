@@ -143,16 +143,6 @@ class SentryTarget extends \yii\log\Target
                 $scope->setExtras($this->getExtras($request));
 
                 if ($message instanceof \Throwable) {
-                    $previous = $message->getPrevious();
-                    if ($previous) {
-                        $scope->setExtra('Previous Exception', [
-                            'message' => $previous->getMessage(),
-                            'file' => $previous->getFile(),
-                            'line' => $previous->getLine(),
-                            'trace' => $previous->getTraceAsString(),
-                        ]);
-                    }
-
                     Sentry\captureException($message);
                 } else {
                     if (!is_string($message)) {
