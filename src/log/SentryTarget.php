@@ -89,7 +89,14 @@ class SentryTarget extends \yii\log\Target
 
         $this->except = array_unique(array_merge($this->except, $except));
 
-        Sentry\init(array_merge($this->getOptions()));
+        $options = $this->getOptions();
+        Sentry\init($options);
+
+        if (isset($options['enable_logs']) && $options['enable_logs']) {
+            register_shutdown_function(function () {
+                Sentry\logger()->flush();
+            });
+        }
     }
 
     /**
