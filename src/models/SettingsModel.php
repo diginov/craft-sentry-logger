@@ -60,6 +60,11 @@ class SettingsModel extends \craft\base\Model
     /**
      * @var array
      */
+    public array $except = [];
+
+    /**
+     * @var array
+     */
     public array $userPrivacy = ['id', 'email', 'username', 'ip_address', 'cookies', 'permissions'];
 
     // Public Methods
