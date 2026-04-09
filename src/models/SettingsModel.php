@@ -50,17 +50,22 @@ class SettingsModel extends \craft\base\Model
     /**
      * @var array
      */
+    public array $categories = [];
+
+    /**
+     * @var array
+     */
+    public array $except = [];
+
+    /**
+     * @var array
+     */
     public array $exceptCodes = [403, 404];
 
     /**
      * @var array
      */
     public array $exceptPatterns = [];
-
-    /**
-     * @var array
-     */
-    public array $except = [];
 
     /**
      * @var array
